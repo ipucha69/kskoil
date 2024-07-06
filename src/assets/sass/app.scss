@@ -1,0 +1,69 @@
+/* poppins */
+@font-face {
+    font-family: 'poppins';
+    font-style: normal;
+    font-weight: 400;
+    src: local(''),
+        url('../fonts/poppins.woff2') format('woff2'),
+        url('../fonts/poppins.woff') format('woff'),
+}
+
+// ########### General css ###########
+// :root{
+//     --primary-color: #323232;
+// }
+
+* {
+    font-family: 'poppins' !important;
+}
+
+// a {
+//     text-decoration: none !important;
+//     color: var(--primary-color) !important;
+// }
+label{
+    color: var(--primary-color) !important;
+}
+
+textarea{
+    background-color: #eee;
+}
+
+textarea:focus {
+    border: 0 !important;
+    box-shadow: 0;
+}
+
+// html, body{
+//     padding: 0;
+//     margin: 0;
+//     /* width */
+//     ::-webkit-scrollbar {
+//         width: 10px;
+//     }
+
+//     /* Track */
+//     ::-webkit-scrollbar-track {
+//         box-shadow: inset 0 0 5px grey; 
+//         border-radius: 5px;
+//     }
+    
+//     /* Handle */
+//     ::-webkit-scrollbar-thumb {
+//         background: rgb(50, 50, 50, .8); 
+//         border-radius: 5px;
+//     }
+
+//     /* Handle on hover */
+//     ::-webkit-scrollbar-thumb:hover {
+//         background: rgb(50, 50, 50, .4); 
+//     }
+// }
+
+input:checked {
+    background-color: #22c55e; /* bg-green-500 */
+}
+
+input:checked ~ span:last-child {
+    --tw-translate-x: 1.75rem; /* translate-x-7 */
+}
