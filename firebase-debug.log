@@ -1,0 +1,250 @@
+[debug] [2024-07-03T11:24:06.971Z] ----------------------------------------------------------------------
+[debug] [2024-07-03T11:24:06.974Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\hp\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy --only functions:helloWorld
+[debug] [2024-07-03T11:24:06.975Z] CLI Version:   12.0.0
+[debug] [2024-07-03T11:24:06.975Z] Platform:      win32
+[debug] [2024-07-03T11:24:06.976Z] Node Version:  v18.20.3
+[debug] [2024-07-03T11:24:06.976Z] Time:          Wed Jul 03 2024 14:24:06 GMT+0300 (East Africa Time)
+[debug] [2024-07-03T11:24:06.977Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-07-03T11:24:07.230Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-07-03T11:24:07.231Z] > authorizing via signed-in user (ipucha69@gmail.com)
+[debug] [2024-07-03T11:24:07.232Z] [iam] checking project ksk-oil for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2024-07-03T11:24:07.235Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/ksk-oil:testIamPermissions [none]
+[debug] [2024-07-03T11:24:07.236Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/ksk-oil:testIamPermissions x-goog-quota-user=projects/ksk-oil
+[debug] [2024-07-03T11:24:07.236Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/ksk-oil:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2024-07-03T11:24:09.946Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/ksk-oil:testIamPermissions 200
+[debug] [2024-07-03T11:24:09.947Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/ksk-oil:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2024-07-03T11:24:09.948Z] >>> [apiv2][query] POST https://iam.googleapis.com/v1/projects/ksk-oil/serviceAccounts/ksk-oil@appspot.gserviceaccount.com:testIamPermissions [none]
+[debug] [2024-07-03T11:24:09.948Z] >>> [apiv2][body] POST https://iam.googleapis.com/v1/projects/ksk-oil/serviceAccounts/ksk-oil@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[debug] [2024-07-03T11:24:12.193Z] <<< [apiv2][status] POST https://iam.googleapis.com/v1/projects/ksk-oil/serviceAccounts/ksk-oil@appspot.gserviceaccount.com:testIamPermissions 200
+[debug] [2024-07-03T11:24:12.194Z] <<< [apiv2][body] POST https://iam.googleapis.com/v1/projects/ksk-oil/serviceAccounts/ksk-oil@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[info] 
+[info] === Deploying to 'ksk-oil'...
+[info] 
+[info] i  deploying functions 
+[debug] [2024-07-03T11:24:12.205Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/ksk-oil [none]
+[debug] [2024-07-03T11:24:13.227Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/ksk-oil 200
+[debug] [2024-07-03T11:24:13.227Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/ksk-oil {"projectId":"ksk-oil","projectNumber":"272191890678","displayName":"KSK OIL","name":"projects/ksk-oil","resources":{"hostingSite":"ksk-oil","storageBucket":"ksk-oil.appspot.com","locationId":"us-central"},"state":"ACTIVE","etag":"1_46439aca-ffca-4c11-b5ee-2283886b147a"}
+[info] i  functions: preparing codebase default for deployment 
+[info] i  functions: ensuring required API cloudfunctions.googleapis.com is enabled... 
+[info] i  functions: ensuring required API cloudbuild.googleapis.com is enabled... 
+[info] i  artifactregistry: ensuring required API artifactregistry.googleapis.com is enabled... 
+[debug] [2024-07-03T11:24:13.233Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/cloudfunctions.googleapis.com [none]
+[debug] [2024-07-03T11:24:13.233Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/cloudfunctions.googleapis.com x-goog-quota-user=projects/ksk-oil
+[debug] [2024-07-03T11:24:13.236Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/runtimeconfig.googleapis.com [none]
+[debug] [2024-07-03T11:24:13.236Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/runtimeconfig.googleapis.com x-goog-quota-user=projects/ksk-oil
+[debug] [2024-07-03T11:24:13.239Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/cloudbuild.googleapis.com [none]
+[debug] [2024-07-03T11:24:13.240Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/cloudbuild.googleapis.com x-goog-quota-user=projects/ksk-oil
+[debug] [2024-07-03T11:24:13.242Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/artifactregistry.googleapis.com [none]
+[debug] [2024-07-03T11:24:13.242Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/artifactregistry.googleapis.com x-goog-quota-user=projects/ksk-oil
+[debug] [2024-07-03T11:24:16.026Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/artifactregistry.googleapis.com 200
+[debug] [2024-07-03T11:24:16.027Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/artifactregistry.googleapis.com [omitted]
+[info] +  artifactregistry: required API artifactregistry.googleapis.com is enabled 
+[debug] [2024-07-03T11:24:16.071Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/cloudbuild.googleapis.com 200
+[debug] [2024-07-03T11:24:16.072Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/cloudbuild.googleapis.com [omitted]
+[info] +  functions: required API cloudbuild.googleapis.com is enabled 
+[debug] [2024-07-03T11:24:16.248Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/cloudfunctions.googleapis.com 200
+[debug] [2024-07-03T11:24:16.248Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/cloudfunctions.googleapis.com [omitted]
+[info] +  functions: required API cloudfunctions.googleapis.com is enabled 
+[debug] [2024-07-03T11:24:16.286Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/runtimeconfig.googleapis.com 200
+[debug] [2024-07-03T11:24:16.286Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/runtimeconfig.googleapis.com [omitted]
+[debug] [2024-07-03T11:24:16.287Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/ksk-oil/adminSdkConfig [none]
+[debug] [2024-07-03T11:24:17.396Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/ksk-oil/adminSdkConfig 200
+[debug] [2024-07-03T11:24:17.396Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/ksk-oil/adminSdkConfig {"projectId":"ksk-oil","storageBucket":"ksk-oil.appspot.com","locationId":"us-central"}
+[debug] [2024-07-03T11:24:17.398Z] >>> [apiv2][query] GET https://runtimeconfig.googleapis.com/v1beta1/projects/ksk-oil/configs [none]
+[debug] [2024-07-03T11:24:19.092Z] <<< [apiv2][status] GET https://runtimeconfig.googleapis.com/v1beta1/projects/ksk-oil/configs 200
+[debug] [2024-07-03T11:24:19.092Z] <<< [apiv2][body] GET https://runtimeconfig.googleapis.com/v1beta1/projects/ksk-oil/configs {}
+[debug] [2024-07-03T11:24:19.096Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[warn] !  functions: Please note that there will be breaking changes when you upgrade. 
+[debug] [2024-07-03T11:24:22.508Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "18"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "firebase-admin": "^11.8.0",
+    "firebase-functions": "^4.3.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2024-07-03T11:24:22.509Z] Building nodejs source
+[debug] [2024-07-03T11:24:22.511Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-07-03T11:24:22.525Z] Found firebase-functions binary at 'C:\Users\hp\Documents\kskoil\functions\node_modules\.bin\firebase-functions'
+[debug] [2024-07-03T11:24:23.272Z] Serving at port 8547
+
+[debug] [2024-07-03T11:24:23.696Z] Got response from /__/functions.yaml {"endpoints":{"helloWorld":{"availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"httpsTrigger":{},"entryPoint":"helloWorld"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[info] i  functions: preparing functions directory for uploading... 
+[info] i  functions: packaged C:\Users\hp\Documents\kskoil\functions (127.39 KB) for uploading 
+[debug] [2024-07-03T11:24:23.821Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v1/projects/ksk-oil/locations/-/functions [none]
+[debug] [2024-07-03T11:24:25.904Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v1/projects/ksk-oil/locations/-/functions 200
+[debug] [2024-07-03T11:24:25.904Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v1/projects/ksk-oil/locations/-/functions {}
+[debug] [2024-07-03T11:24:25.905Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v2/projects/ksk-oil/locations/-/functions filter=environment%3D%22GEN_2%22
+[debug] [2024-07-03T11:24:27.830Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v2/projects/ksk-oil/locations/-/functions 200
+[debug] [2024-07-03T11:24:27.830Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v2/projects/ksk-oil/locations/-/functions {"functions":[{"name":"projects/ksk-oil/locations/us-central1/functions/helloWorld","buildConfig":{"build":"projects/272191890678/locations/us-central1/builds/e61fdd0a-de46-41a4-a004-15062dac77dd","runtime":"nodejs18","entryPoint":"helloWorld","source":{"storageSource":{"bucket":"gcf-v2-sources-272191890678-us-central1","object":"helloWorld/function-source.zip","generation":"1720004587284986"}},"environmentVariables":{"GOOGLE_NODE_RUN_SCRIPTS":""},"dockerRepository":"projects/ksk-oil/locations/us-central1/repositories/gcf-artifacts","sourceProvenance":{"resolvedStorageSource":{"bucket":"gcf-v2-sources-272191890678-us-central1","object":"helloWorld/function-source.zip","generation":"1720004587284986"}},"dockerRegistry":"ARTIFACT_REGISTRY","automaticUpdatePolicy":{}},"state":"FAILED","updateTime":"2024-07-03T11:04:10.910324110Z","labels":{"deployment-tool":"cli-firebase","firebase-functions-hash":"a62ae6d0535460aa9d1d278139250f5b14eab567"},"stateMessages":[{"severity":"ERROR","type":"CloudRunServiceNotFound","message":"Cloud Run service projects/ksk-oil/locations/us-central1/services/helloworld for the function was not found. The function will not work correctly. Please redeploy."}],"environment":"GEN_2","url":"https://us-central1-ksk-oil.cloudfunctions.net/helloWorld","createTime":"2024-07-03T11:03:07.470709188Z"}]}
+[info] i  functions: ensuring required API run.googleapis.com is enabled... 
+[info] i  functions: ensuring required API eventarc.googleapis.com is enabled... 
+[info] i  functions: ensuring required API pubsub.googleapis.com is enabled... 
+[info] i  functions: ensuring required API storage.googleapis.com is enabled... 
+[debug] [2024-07-03T11:24:27.844Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/run.googleapis.com [none]
+[debug] [2024-07-03T11:24:27.844Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/run.googleapis.com x-goog-quota-user=projects/ksk-oil
+[debug] [2024-07-03T11:24:27.846Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/eventarc.googleapis.com [none]
+[debug] [2024-07-03T11:24:27.846Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/eventarc.googleapis.com x-goog-quota-user=projects/ksk-oil
+[debug] [2024-07-03T11:24:27.848Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/pubsub.googleapis.com [none]
+[debug] [2024-07-03T11:24:27.849Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/pubsub.googleapis.com x-goog-quota-user=projects/ksk-oil
+[debug] [2024-07-03T11:24:27.851Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/storage.googleapis.com [none]
+[debug] [2024-07-03T11:24:27.851Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/storage.googleapis.com x-goog-quota-user=projects/ksk-oil
+[debug] [2024-07-03T11:24:29.718Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/run.googleapis.com 200
+[debug] [2024-07-03T11:24:29.719Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/run.googleapis.com [omitted]
+[info] +  functions: required API run.googleapis.com is enabled 
+[debug] [2024-07-03T11:24:29.882Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/storage.googleapis.com 200
+[debug] [2024-07-03T11:24:29.882Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/storage.googleapis.com [omitted]
+[info] +  functions: required API storage.googleapis.com is enabled 
+[debug] [2024-07-03T11:24:29.912Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/eventarc.googleapis.com 200
+[debug] [2024-07-03T11:24:29.912Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/eventarc.googleapis.com [omitted]
+[info] +  functions: required API eventarc.googleapis.com is enabled 
+[debug] [2024-07-03T11:24:30.013Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/pubsub.googleapis.com 200
+[debug] [2024-07-03T11:24:30.014Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/pubsub.googleapis.com [omitted]
+[info] +  functions: required API pubsub.googleapis.com is enabled 
+[info] i  functions: generating the service identity for pubsub.googleapis.com... 
+[info] i  functions: generating the service identity for eventarc.googleapis.com... 
+[debug] [2024-07-03T11:24:30.016Z] >>> [apiv2][query] POST https://serviceusage.googleapis.com/v1beta1/projects/272191890678/services/pubsub.googleapis.com:generateServiceIdentity [none]
+[debug] [2024-07-03T11:24:30.019Z] >>> [apiv2][query] POST https://serviceusage.googleapis.com/v1beta1/projects/272191890678/services/eventarc.googleapis.com:generateServiceIdentity [none]
+[debug] [2024-07-03T11:24:32.310Z] <<< [apiv2][status] POST https://serviceusage.googleapis.com/v1beta1/projects/272191890678/services/eventarc.googleapis.com:generateServiceIdentity 200
+[debug] [2024-07-03T11:24:32.310Z] <<< [apiv2][body] POST https://serviceusage.googleapis.com/v1beta1/projects/272191890678/services/eventarc.googleapis.com:generateServiceIdentity {"name":"operations/finished.DONE_OPERATION","done":true,"response":{"@type":"type.googleapis.com/google.api.serviceusage.v1beta1.ServiceIdentity","email":"service-272191890678@gcp-sa-eventarc.iam.gserviceaccount.com","uniqueId":"102386167150161886777"}}
+[debug] [2024-07-03T11:24:32.348Z] <<< [apiv2][status] POST https://serviceusage.googleapis.com/v1beta1/projects/272191890678/services/pubsub.googleapis.com:generateServiceIdentity 200
+[debug] [2024-07-03T11:24:32.348Z] <<< [apiv2][body] POST https://serviceusage.googleapis.com/v1beta1/projects/272191890678/services/pubsub.googleapis.com:generateServiceIdentity {"name":"operations/finished.DONE_OPERATION","done":true,"response":{"@type":"type.googleapis.com/google.api.serviceusage.v1beta1.ServiceIdentity","email":"service-272191890678@gcp-sa-pubsub.iam.gserviceaccount.com","uniqueId":"117240058939027440000"}}
+[debug] [2024-07-03T11:24:32.358Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/ksk-oil [none]
+[debug] [2024-07-03T11:24:33.211Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/ksk-oil 200
+[debug] [2024-07-03T11:24:33.211Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/ksk-oil {"projectId":"ksk-oil","projectNumber":"272191890678","displayName":"KSK OIL","name":"projects/ksk-oil","resources":{"hostingSite":"ksk-oil","storageBucket":"ksk-oil.appspot.com","locationId":"us-central"},"state":"ACTIVE","etag":"1_46439aca-ffca-4c11-b5ee-2283886b147a"}
+[debug] [2024-07-03T11:24:33.213Z] >>> [apiv2][query] POST https://cloudfunctions.googleapis.com/v2/projects/ksk-oil/locations/us-central1/functions:generateUploadUrl [none]
+[debug] [2024-07-03T11:24:34.378Z] <<< [apiv2][status] POST https://cloudfunctions.googleapis.com/v2/projects/ksk-oil/locations/us-central1/functions:generateUploadUrl 200
+[debug] [2024-07-03T11:24:34.379Z] <<< [apiv2][body] POST https://cloudfunctions.googleapis.com/v2/projects/ksk-oil/locations/us-central1/functions:generateUploadUrl {"uploadUrl":"https://storage.googleapis.com/gcf-v2-uploads-272191890678-us-central1/09667578-de7e-4b4b-9543-622222997d70.zip?GoogleAccessId=service-272191890678@gcf-admin-robot.iam.gserviceaccount.com&Expires=1720007673&Signature=fLpPc8PD8Oi9iL5hErQQEExOhkDqw0wXSBkoc0UYSgen104pMSyseLTVubfCpBf6dOHGdMYytAtZma2%2Bjq1AFqtpoP1v2gjhUK7WYtEi1H%2FTZtDenDgKtrmgXEDcpSCrpnQq7SCS9ppNquS9we6n2Fq6hsF6QZkqahgM7E47N9PM%2BV1wfhEp2%2F9P2HVoiPbpePkGOMOlsGPIp%2B4NSoS2fznesFCA9JcVBlK2%2BEev20P3kGwgUJT1wi3nXEGBvVlpd186ERNNixwzx6vKEc3MN57WEGFBgb4VFfdZfDythWv5NagmnDbVolBBq64qYMO5vMRSZsAFb9iDUYlETzL0%2FA%3D%3D","storageSource":{"bucket":"gcf-v2-uploads-272191890678-us-central1","object":"09667578-de7e-4b4b-9543-622222997d70.zip"}}
+[debug] [2024-07-03T11:24:34.384Z] >>> [apiv2][query] PUT https://storage.googleapis.com/gcf-v2-uploads-272191890678-us-central1/09667578-de7e-4b4b-9543-622222997d70.zip GoogleAccessId=service-272191890678%40gcf-admin-robot.iam.gserviceaccount.com&Expires=1720007673&Signature=fLpPc8PD8Oi9iL5hErQQEExOhkDqw0wXSBkoc0UYSgen104pMSyseLTVubfCpBf6dOHGdMYytAtZma2%2Bjq1AFqtpoP1v2gjhUK7WYtEi1H%2FTZtDenDgKtrmgXEDcpSCrpnQq7SCS9ppNquS9we6n2Fq6hsF6QZkqahgM7E47N9PM%2BV1wfhEp2%2F9P2HVoiPbpePkGOMOlsGPIp%2B4NSoS2fznesFCA9JcVBlK2%2BEev20P3kGwgUJT1wi3nXEGBvVlpd186ERNNixwzx6vKEc3MN57WEGFBgb4VFfdZfDythWv5NagmnDbVolBBq64qYMO5vMRSZsAFb9iDUYlETzL0%2FA%3D%3D
+[debug] [2024-07-03T11:24:34.385Z] >>> [apiv2][body] PUT https://storage.googleapis.com/gcf-v2-uploads-272191890678-us-central1/09667578-de7e-4b4b-9543-622222997d70.zip [stream]
+[debug] [2024-07-03T11:24:37.469Z] <<< [apiv2][status] PUT https://storage.googleapis.com/gcf-v2-uploads-272191890678-us-central1/09667578-de7e-4b4b-9543-622222997d70.zip 200
+[debug] [2024-07-03T11:24:37.471Z] <<< [apiv2][body] PUT https://storage.googleapis.com/gcf-v2-uploads-272191890678-us-central1/09667578-de7e-4b4b-9543-622222997d70.zip [omitted]
+[info] +  functions: functions folder uploaded successfully 
+[info] i  functions: updating Node.js 18 function helloWorld(us-central1)... 
+[debug] [2024-07-03T11:24:37.490Z] >>> [apiv2][query] PATCH https://cloudfunctions.googleapis.com/v2/projects/ksk-oil/locations/us-central1/functions/helloWorld updateMask=name%2CbuildConfig.runtime%2CbuildConfig.entryPoint%2CbuildConfig.source.storageSource.bucket%2CbuildConfig.source.storageSource.object%2CbuildConfig.environmentVariables%2CserviceConfig.environmentVariables%2CserviceConfig.ingressSettings%2CserviceConfig.timeoutSeconds%2CserviceConfig.serviceAccountEmail%2CserviceConfig.availableMemory%2CserviceConfig.minInstanceCount%2CserviceConfig.maxInstanceCount%2CserviceConfig.maxInstanceRequestConcurrency%2CserviceConfig.availableCpu%2CserviceConfig.vpcConnector%2CserviceConfig.vpcConnectorEgressSettings%2Clabels%2CbuildConfig.buildEnvironmentVariables
+[debug] [2024-07-03T11:24:37.491Z] >>> [apiv2][body] PATCH https://cloudfunctions.googleapis.com/v2/projects/ksk-oil/locations/us-central1/functions/helloWorld {"name":"projects/ksk-oil/locations/us-central1/functions/helloWorld","buildConfig":{"runtime":"nodejs18","entryPoint":"helloWorld","source":{"storageSource":{"bucket":"gcf-v2-uploads-272191890678-us-central1","object":"09667578-de7e-4b4b-9543-622222997d70.zip"}},"environmentVariables":{"GOOGLE_NODE_RUN_SCRIPTS":""}},"serviceConfig":{"environmentVariables":{"FIREBASE_CONFIG":"{\"projectId\":\"ksk-oil\",\"storageBucket\":\"ksk-oil.appspot.com\",\"locationId\":\"us-central\"}","GCLOUD_PROJECT":"ksk-oil","EVENTARC_CLOUD_EVENT_SOURCE":"projects/ksk-oil/locations/us-central1/services/helloWorld"},"ingressSettings":null,"timeoutSeconds":null,"serviceAccountEmail":null,"availableMemory":"256Mi","minInstanceCount":null,"maxInstanceCount":null,"maxInstanceRequestConcurrency":80,"availableCpu":"1","vpcConnector":null,"vpcConnectorEgressSettings":null},"labels":{"deployment-tool":"cli-firebase","firebase-functions-hash":"a8738454dff409261d34aa2ae3d4454e2879a32b"}}
+[debug] [2024-07-03T11:24:39.600Z] <<< [apiv2][status] PATCH https://cloudfunctions.googleapis.com/v2/projects/ksk-oil/locations/us-central1/functions/helloWorld 404
+[debug] [2024-07-03T11:24:39.600Z] <<< [apiv2][body] PATCH https://cloudfunctions.googleapis.com/v2/projects/ksk-oil/locations/us-central1/functions/helloWorld {"error":{"code":404,"message":"Resource 'projects/ksk-oil/locations/us-central1/functions/helloWorld' was not found","status":"NOT_FOUND","details":[{"@type":"type.googleapis.com/google.rpc.ResourceInfo","resourceName":"projects/ksk-oil/locations/us-central1/functions/helloWorld"}]}}
+[warn] !  functions: HTTP Error: 404, Resource 'projects/ksk-oil/locations/us-central1/functions/helloWorld' was not found 
+[warn] !  functions: failed to update function projects/ksk-oil/locations/us-central1/functions/helloWorld 
+[error] Failed to update function projects/ksk-oil/locations/us-central1/functions/helloWorld
+[debug] [2024-07-03T11:24:39.629Z] Total Function Deployment time: 2128
+[debug] [2024-07-03T11:24:39.630Z] 1 Functions Deployed
+[debug] [2024-07-03T11:24:39.630Z] 1 Functions Errored
+[debug] [2024-07-03T11:24:39.630Z] 0 Function Deployments Aborted
+[debug] [2024-07-03T11:24:39.630Z] Average Function Deployment time: 2126
+[info] 
+[info] Functions deploy had errors with the following functions:
+	helloWorld(us-central1)
+[debug] [2024-07-03T11:24:40.839Z] Not printing URL for HTTPS function. Typically this means it didn't match a filter or we failed deployment
+[info] i  functions: cleaning up build files... 
+[debug] [2024-07-03T11:24:40.853Z] >>> [apiv2][query] DELETE https://artifactregistry.googleapis.com/v1beta2/projects/ksk-oil/locations/us-central1/repositories/gcf-artifacts/packages/hello_world [none]
+[debug] [2024-07-03T11:24:40.859Z] >>> [apiv2][query] GET https://us.gcr.io/v2/ksk-oil/gcf/us-central1/tags/list [none]
+[debug] [2024-07-03T11:24:42.221Z] <<< [apiv2][status] GET https://us.gcr.io/v2/ksk-oil/gcf/us-central1/tags/list 404
+[debug] [2024-07-03T11:24:42.221Z] <<< [apiv2][body] GET https://us.gcr.io/v2/ksk-oil/gcf/us-central1/tags/list {"errors":[{"code":"NAME_UNKNOWN","message":"Repository \"us.gcr.io\" not found"}]}
+[debug] [2024-07-03T11:24:42.222Z] Failed docker command with error  HTTP Error: 404, Not Found {"name":"FirebaseError","children":[],"context":{"body":{"errors":[{"code":"NAME_UNKNOWN","message":"Repository \"us.gcr.io\" not found"}],"error":{"message":"Not Found"}},"response":{"statusCode":404}},"exit":1,"message":"HTTP Error: 404, Not Found","status":404}
+[debug] [2024-07-03T11:24:42.223Z] >>> [apiv2][query] GET https://us.gcr.io/v2/ksk-oil/gcf/us-central1/tags/list [none]
+[debug] [2024-07-03T11:24:42.625Z] <<< [apiv2][status] DELETE https://artifactregistry.googleapis.com/v1beta2/projects/ksk-oil/locations/us-central1/repositories/gcf-artifacts/packages/hello_world 404
+[debug] [2024-07-03T11:24:42.625Z] <<< [apiv2][body] DELETE https://artifactregistry.googleapis.com/v1beta2/projects/ksk-oil/locations/us-central1/repositories/gcf-artifacts/packages/hello_world {"error":{"code":404,"message":"Package \"projects/ksk-oil/locations/us-central1/repositories/gcf-artifacts/packages/hello_world\" was not found.","status":"NOT_FOUND"}}
+[debug] [2024-07-03T11:24:43.145Z] <<< [apiv2][status] GET https://us.gcr.io/v2/ksk-oil/gcf/us-central1/tags/list 404
+[debug] [2024-07-03T11:24:43.145Z] <<< [apiv2][body] GET https://us.gcr.io/v2/ksk-oil/gcf/us-central1/tags/list {"errors":[{"code":"NAME_UNKNOWN","message":"Repository \"us.gcr.io\" not found"}]}
+[debug] [2024-07-03T11:24:43.147Z] Failed docker command with error  HTTP Error: 404, Not Found {"name":"FirebaseError","children":[],"context":{"body":{"errors":[{"code":"NAME_UNKNOWN","message":"Repository \"us.gcr.io\" not found"}],"error":{"message":"Not Found"}},"response":{"statusCode":404}},"exit":1,"message":"HTTP Error: 404, Not Found","status":404}
+[debug] [2024-07-03T11:24:43.247Z] >>> [apiv2][query] GET https://us.gcr.io/v2/ksk-oil/gcf/us-central1/tags/list [none]
+[debug] [2024-07-03T11:24:44.645Z] <<< [apiv2][status] GET https://us.gcr.io/v2/ksk-oil/gcf/us-central1/tags/list 404
+[debug] [2024-07-03T11:24:44.645Z] <<< [apiv2][body] GET https://us.gcr.io/v2/ksk-oil/gcf/us-central1/tags/list {"errors":[{"code":"NAME_UNKNOWN","message":"Repository \"us.gcr.io\" not found"}]}
+[debug] [2024-07-03T11:24:44.646Z] Failed docker command with error  HTTP Error: 404, Not Found {"name":"FirebaseError","children":[],"context":{"body":{"errors":[{"code":"NAME_UNKNOWN","message":"Repository \"us.gcr.io\" not found"}],"error":{"message":"Not Found"}},"response":{"statusCode":404}},"exit":1,"message":"HTTP Error: 404, Not Found","status":404}
+[warn] !  functions: Unhandled error cleaning up build images. This could result in a small monthly bill if not corrected. You can attempt to delete these images by redeploying or you can delete them manually at https://console.cloud.google.com/gcr/images/ksk-oil/us/gcf 
+[debug] [2024-07-03T11:24:44.649Z] Functions deploy failed.
+[debug] [2024-07-03T11:24:44.650Z] {
+  "endpoint": {
+    "id": "helloWorld",
+    "project": "ksk-oil",
+    "region": "us-central1",
+    "entryPoint": "helloWorld",
+    "platform": "gcfv2",
+    "runtime": "nodejs18",
+    "httpsTrigger": {},
+    "labels": {
+      "deployment-tool": "cli-firebase"
+    },
+    "serviceAccount": null,
+    "ingressSettings": null,
+    "availableMemoryMb": null,
+    "timeoutSeconds": null,
+    "maxInstances": null,
+    "minInstances": null,
+    "concurrency": 80,
+    "vpc": null,
+    "environmentVariables": {
+      "FIREBASE_CONFIG": "{\"projectId\":\"ksk-oil\",\"storageBucket\":\"ksk-oil.appspot.com\",\"locationId\":\"us-central\"}",
+      "GCLOUD_PROJECT": "ksk-oil",
+      "EVENTARC_CLOUD_EVENT_SOURCE": "projects/ksk-oil/locations/us-central1/services/helloWorld"
+    },
+    "codebase": "default",
+    "securityLevel": "SECURE_ALWAYS",
+    "cpu": 1,
+    "targetedByOnly": true,
+    "hash": "a8738454dff409261d34aa2ae3d4454e2879a32b"
+  },
+  "op": "update",
+  "original": {
+    "name": "FirebaseError",
+    "children": [],
+    "context": {
+      "function": "projects/ksk-oil/locations/us-central1/functions/helloWorld"
+    },
+    "exit": 1,
+    "message": "Failed to update function projects/ksk-oil/locations/us-central1/functions/helloWorld",
+    "original": {
+      "name": "FirebaseError",
+      "children": [],
+      "context": {
+        "body": {
+          "error": {
+            "code": 404,
+            "message": "Resource 'projects/ksk-oil/locations/us-central1/functions/helloWorld' was not found",
+            "status": "NOT_FOUND",
+            "details": [
+              {
+                "@type": "type.googleapis.com/google.rpc.ResourceInfo",
+                "resourceName": "projects/ksk-oil/locations/us-central1/functions/helloWorld"
+              }
+            ]
+          }
+        },
+        "response": {
+          "statusCode": 404
+        }
+      },
+      "exit": 1,
+      "message": "HTTP Error: 404, Resource 'projects/ksk-oil/locations/us-central1/functions/helloWorld' was not found",
+      "status": 404
+    },
+    "status": 404
+  }
+}
+[debug] [2024-07-03T11:24:45.610Z] Error: Failed to update function helloWorld in region us-central1
+    at C:\Users\hp\AppData\Roaming\npm\node_modules\firebase-tools\lib\deploy\functions\release\fabricator.js:48:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async Fabricator.updateV2Function (C:\Users\hp\AppData\Roaming\npm\node_modules\firebase-tools\lib\deploy\functions\release\fabricator.js:365:32)
+    at async Fabricator.updateEndpoint (C:\Users\hp\AppData\Roaming\npm\node_modules\firebase-tools\lib\deploy\functions\release\fabricator.js:150:13)
+    at async handle (C:\Users\hp\AppData\Roaming\npm\node_modules\firebase-tools\lib\deploy\functions\release\fabricator.js:85:17)
+[error] 
+[error] Error: There was an error deploying functions
