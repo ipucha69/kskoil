@@ -67,10 +67,12 @@ exports.customerFinancialStatements = onCall(async (request) => {
                 const day = expense.day;
                 const detail = expense.truck;
                 const stationName = expense.stationName;
+                const fuel = expense.fuel;
                 const litres = expense.quantity;
-                const price = expense.stationPrice.toString();
+                const price = expense.customerPrice.toString();
                 const amount = expense.customerDebt.toString();
                 const balance = "";
+                // const paidAmount = "";
                 const type = "expense";
 
                 customerExpenses.push([day, detail, stationName, litres, price, amount, paidAmount, balance, type]);
@@ -99,6 +101,7 @@ exports.customerFinancialStatements = onCall(async (request) => {
                 const detail = paymentMethod;
                 const stationName = payment.stationName;
                 const litres = "";
+                const fuel = "";
                 const price = "";
                 const amount = "";
                 const paidAmount = payment.amount.toString();
@@ -136,7 +139,11 @@ exports.customerFinancialStatements = onCall(async (request) => {
             
             currentBalance = Math.abs(currentBalance); // Remove negative sign if present 
             const balance = currentBalance.toString();  //convert into string
-            return [...transaction.slice(0, 7), balance, ...transaction.slice(7)];
+            // Remove transaction[8] and insert the balance
+            const updatedTransaction = [...transaction.slice(0, 7), balance];
+            const sortedTransaction = [...updatedTransaction.slice(0, 8)];
+
+            return sortedTransaction;
         });
 
         return {
@@ -148,6 +155,7 @@ exports.customerFinancialStatements = onCall(async (request) => {
                 totalPayment,
                 closingBalance,
                 combinedData: updatedTransactions,
+                title: "Financial statement"
             },
         };
     } catch (error) {

@@ -71,8 +71,17 @@ exports.fetchSalesBook = onCall(async (request) => {
             // Calculate sum of debtors for the current day book
             debtorsSnapshot.forEach((debtorDoc) => {
             const debtor = debtorDoc.data();
-            totalDebtorsAmount += debtor.stationTotalAmount;
+            totalDebtorsAmount += debtor.totalAmount;
             });
+
+            // Check and replace NaN with 0
+            if (isNaN(totalExpensesAmount)) {
+                totalExpensesAmount = 0;
+            }
+
+            if (isNaN(totalDebtorsAmount)) {
+                totalDebtorsAmount = 0;
+            }
 
             // Push the data to the dayBooks array including total expenses and total debtors
             dayBooks.push({
@@ -142,8 +151,17 @@ exports.fetchSalesBook = onCall(async (request) => {
             // Calculate sum of debtors for the current day book
             debtorsSnapshot.forEach((debtorDoc) => {
             const debtor = debtorDoc.data();
-            totalDebtorsAmount += debtor.stationTotalAmount;
+            totalDebtorsAmount += debtor.totalAmount;
             });
+
+            // Check and replace NaN with 0
+            if (isNaN(totalExpensesAmount)) {
+                totalExpensesAmount = 0;
+            }
+
+            if (isNaN(totalDebtorsAmount)) {
+                totalDebtorsAmount = 0;
+            }
 
             // Push the data to the dayBooks array including total expenses and total debtors
             dayBooks.push({

@@ -107,6 +107,7 @@ exports.initializeDayBook = onSchedule(
                         litres: pump?.litres,
                         status: pump?.status,
                         stationID: pump?.stationID,
+                        dayBookID: docRef?.id,
                         created_by: pump?.created_by,
                         updated_by: pump?.updated_by,
                         created_at: pump?.created_at,

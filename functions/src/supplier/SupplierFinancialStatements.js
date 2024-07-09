@@ -139,7 +139,11 @@ exports.supplierFinancialStatements = onCall(async (request) => {
             }
             currentBalance = Math.abs(currentBalance); // Remove negative sign if present 
             const balance = currentBalance.toString();  //convert into string
-            return [...transaction.slice(0, 7), balance, ...transaction.slice(7)];
+             // Remove transaction[8] and insert the balance
+             const updatedTransaction = [...transaction.slice(0, 7), balance];
+             const sortedTransaction = [...updatedTransaction.slice(0, 8)];
+ 
+             return sortedTransaction;
         });
 
 

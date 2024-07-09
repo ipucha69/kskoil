@@ -73,7 +73,7 @@ exports.dailyCustomerFinancialStatement = onCall(async (request) => {
                         const detail = expense.truck;
                         const stationName = expense.stationName;
                         const litres = expense.quantity;
-                        const price = expense.stationPrice.toString();
+                        const price = expense.customerPrice.toString();
                         const amount = expense.customerDebt.toString();
                         const balance = "";
                         const type = "expense";
@@ -97,7 +97,7 @@ exports.dailyCustomerFinancialStatement = onCall(async (request) => {
                             const detail = expense.truck;
                             const stationName = expense.stationName;
                             const litres = expense.quantity;
-                            const price = expense.stationPrice.toString();
+                            const price = expense.customerPrice.toString();
                             const amount = expense.customerDebt.toString();
                             const balance = "";
                             const type = "expense";
@@ -122,7 +122,7 @@ exports.dailyCustomerFinancialStatement = onCall(async (request) => {
                             const detail = expense.truck;
                             const stationName = expense.stationName;
                             const litres = expense.quantity;
-                            const price = expense.stationPrice.toString();
+                            const price = expense.customerPrice.toString();
                             const amount = expense.customerDebt.toString();
                             const balance = "";
                             const type = "expense";
@@ -283,6 +283,7 @@ exports.dailyCustomerFinancialStatement = onCall(async (request) => {
                 totalPayment,
                 closingBalance,
                 combinedData: updatedTransactions,
+                title: `Financial statement as of ${startDate} to ${endDate}`
             },
         };
     } catch (error) {

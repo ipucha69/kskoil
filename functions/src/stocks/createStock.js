@@ -232,6 +232,8 @@ exports.createStock = onCall(async (request) => {
             .update({
                 agoLitres: FieldValue.increment(parseInt(agoLitres)),
                 pmsLitres: FieldValue.increment(parseInt(pmsLitres)),
+                availableAgoLitres: FieldValue.increment(parseInt(agoLitres)),
+                availablePmsLitres: FieldValue.increment(parseInt(pmsLitres)),
                 totalFuelAmount: FieldValue.increment(totalPrice),
             });
 
@@ -244,6 +246,8 @@ exports.createStock = onCall(async (request) => {
             .update({
                 agoLitres: FieldValue.increment(parseInt(agoLitres)),
                 pmsLitres: FieldValue.increment(parseInt(pmsLitres)),
+                availableAgoLitres: FieldValue.increment(parseInt(agoLitres)),
+                availablePmsLitres: FieldValue.increment(parseInt(pmsLitres)),
                 totalFuelAmount: FieldValue.increment(totalPrice),
             });
         }

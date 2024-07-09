@@ -101,6 +101,7 @@ exports.createSale = onCall(async (request) => {
             totalSalesOne:totalSales,
             totalSales,
             checkOne: true,
+            checkTwo: false,
             check: true,
             descriptionOne: description,
             description,
@@ -154,6 +155,7 @@ exports.createSale = onCall(async (request) => {
             const querySnapshot = await pumpSalesRef
                 .where("pumpID", "==", pumpID)
                 .where("dayBookID", "==", dayBookID)
+                .where("saleTwo", "==", false)
                 .get();
 
             if (!querySnapshot.empty) {
@@ -167,6 +169,65 @@ exports.createSale = onCall(async (request) => {
                     amount: FieldValue.increment(amountDifference),
                     saleType
                 });
+
+                await admin.firestore().collection("pumpSales").doc(existingPumpSale?.id).update({
+                    cm: FieldValue.increment(cmDifference),
+                    amount: FieldValue.increment(amountDifference),
+                    saleType
+                });
+
+                await admin.firestore().collection("stations").doc(stationID).collection("pumps").doc(pumpID).update({
+                    om: FieldValue.increment(cmDifference),
+                    litres: FieldValue.increment(cmDifference)
+                });
+
+                await admin.firestore().collection("pumpBucket").doc(pumpID).update({
+                    om: FieldValue.increment(cmDifference),
+                    litres: FieldValue.increment(cmDifference)
+                });
+
+                await admin
+                .firestore()
+                .collection("stationBucket")
+                .doc(stationID)
+                .update({ 
+                    availableAgoLitres: typeName === "AGO" ? FieldValue.increment(-cmDifference) : FieldValue.increment(0),
+                    availablePmsLitres: typeName === "PMS" ? FieldValue.increment(-cmDifference) : FieldValue.increment(0),
+                    soldAgoLitres: typeName === "AGO" ? FieldValue.increment(cmDifference) : FieldValue.increment(0), 
+                    soldPmsLitres: typeName === "PMS" ? FieldValue.increment(cmDifference) : FieldValue.increment(0),
+                    litres: FieldValue.increment(cmDifference),
+                    totalSalesAmount: FieldValue.increment(amountDifference),
+                 });
+
+                 await admin
+                .firestore()
+                .collection("stations")
+                .doc(stationID)
+                .collection("account")
+                .doc("info")
+                .update({ 
+                    availableAgoLitres: typeName === "AGO" ? FieldValue.increment(-cmDifference) : FieldValue.increment(0),
+                    availablePmsLitres: typeName === "PMS" ? FieldValue.increment(-cmDifference) : FieldValue.increment(0),
+                    soldAgoLitres: typeName === "AGO" ? FieldValue.increment(cmDifference) : FieldValue.increment(0), 
+                    soldPmsLitres: typeName === "PMS" ? FieldValue.increment(cmDifference) : FieldValue.increment(0),
+                    litres: FieldValue.increment(cmDifference),
+                    totalSalesAmount: FieldValue.increment(amountDifference),
+                 });
+
+                await admin.firestore().collection("pumpDaySalesBook").doc(stationID).collection(day).doc(pumpID).update({
+                    cm: FieldValue.increment(cmDifference),
+                    cmOne: FieldValue.increment(cmDifference),
+                    totalFuelAmount: FieldValue.increment(amountDifference),
+                    litres: FieldValue.increment(cmDifference)
+                });
+
+                if(saleType == 2){
+                    await admin.firestore().collection("pumpDaySalesBook").doc(stationID).collection(day).doc(pumpID).update({
+                        omTwo: FieldValue.increment(cmDifference),
+                        cmTwo: FieldValue.increment(cmDifference)
+                    });
+                }
+
             } else {
                 // If no existing pump sale found, proceed to add a new pump sale
                 const diff = cm - om;
@@ -188,6 +249,8 @@ exports.createSale = onCall(async (request) => {
                     stationID,
                     stationName,
                     pumpID,
+                    dayBookID,
+                    saleTwo: false,
                     saleType,
                     created_by,
                     updated_by,
@@ -210,7 +273,9 @@ exports.createSale = onCall(async (request) => {
                     stationID,
                     id: pumpRef.id,
                     stationName,
+                    saleTwo: false,
                     pumpID,
+                    dayBookID,
                     saleType,
                     created_by,
                     updated_by,
@@ -221,17 +286,53 @@ exports.createSale = onCall(async (request) => {
 
                 await admin
                 .firestore()
+                .collection("stationBucket")
+                .doc(stationID)
+                .update({ 
+                    availableAgoLitres: typeName === "AGO" ? FieldValue.increment(-diff) : FieldValue.increment(0),
+                    availablePmsLitres: typeName === "PMS" ? FieldValue.increment(-diff) : FieldValue.increment(0),
+                    soldAgoLitres: typeName === "AGO" ? FieldValue.increment(diff) : FieldValue.increment(0), 
+                    soldPmsLitres: typeName === "PMS" ? FieldValue.increment(diff) : FieldValue.increment(0),
+                    litres: FieldValue.increment(diff),
+                    totalSalesAmount: FieldValue.increment(amount),
+                 });
+
+                 await admin
+                .firestore()
+                .collection("stations")
+                .doc(stationID)
+                .collection("account")
+                .doc("info")
+                .update({ 
+                    availableAgoLitres: typeName === "AGO" ? FieldValue.increment(-diff) : FieldValue.increment(0),
+                    availablePmsLitres: typeName === "PMS" ? FieldValue.increment(-diff) : FieldValue.increment(0),
+                    soldAgoLitres: typeName === "AGO" ? FieldValue.increment(diff) : FieldValue.increment(0), 
+                    soldPmsLitres: typeName === "PMS" ? FieldValue.increment(diff) : FieldValue.increment(0),
+                    litres: FieldValue.increment(diff),
+                    totalSalesAmount: FieldValue.increment(amount),
+                 });
+
+                 await admin
+                .firestore()
                 .collection("stations")
                 .doc(stationID)
                 .collection("pumps")
                 .doc(pumpID)
-                .update({ om: cm });
+                .update({ 
+                    om: cm, 
+                    litres: FieldValue.increment(diff),
+                    totalFuelAmount: FieldValue.increment(amount),
+                 });
 
                 await admin
                 .firestore()
                 .collection("pumpBucket")
                 .doc(pumpID)
-                .update({ om: cm });
+                .update({ 
+                    om: cm, 
+                    litres: FieldValue.increment(diff),
+                    totalFuelAmount: FieldValue.increment(amount),
+                 });
 
                 await admin
                 .firestore()
@@ -243,6 +344,9 @@ exports.createSale = onCall(async (request) => {
                     updated_by,
                     updated_at,
                     cm,
+                    cmOne: cm,
+                    litres: FieldValue.increment(diff),
+                    totalFuelAmount: FieldValue.increment(amount),
                     saleType
                 });
 

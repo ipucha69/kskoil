@@ -381,6 +381,8 @@ exports.updateStock = onCall(async (request) => {
             .update({
                 agoLitres: FieldValue.increment(parseInt(-order?.agoLitres)),
                 pmsLitres: FieldValue.increment(parseInt(-order?.pmsLitres)),
+                availableAgoLitres: FieldValue.increment(parseInt(-order?.agoLitres)),
+                availablePmsLitres: FieldValue.increment(parseInt(-order?.pmsLitres)),
                 totalFuelAmount: FieldValue.increment(-order?.totalPrice),
             });
 
@@ -393,6 +395,8 @@ exports.updateStock = onCall(async (request) => {
             .update({
                 agoLitres: FieldValue.increment(parseInt(-order?.agoLitres)),
                 pmsLitres: FieldValue.increment(parseInt(-order?.pmsLitres)),
+                availableAgoLitres: FieldValue.increment(parseInt(-order?.agoLitres)),
+                availablePmsLitres: FieldValue.increment(parseInt(-order?.pmsLitres)),
                 totalFuelAmount: FieldValue.increment(-order?.totalPrice),
             });
         }
@@ -436,6 +440,8 @@ exports.updateStock = onCall(async (request) => {
                 .update({
                 agoLitres: FieldValue.increment(parseInt(-order?.agoLitres)),
                 pmsLitres: FieldValue.increment(parseInt(-order?.pmsLitres)),
+                availableAgoLitres: FieldValue.increment(parseInt(-order?.agoLitres)),
+                availablePmsLitres: FieldValue.increment(parseInt(-order?.pmsLitres)),
                 totalFuelAmount: FieldValue.increment(-order?.totalPrice),
                 });
 
@@ -448,6 +454,8 @@ exports.updateStock = onCall(async (request) => {
                 .update({
                 agoLitres: FieldValue.increment(parseInt(-order?.agoLitres)),
                 pmsLitres: FieldValue.increment(parseInt(-order?.pmsLitres)),
+                availableAgoLitres: FieldValue.increment(parseInt(-order?.agoLitres)),
+                availablePmsLitres: FieldValue.increment(parseInt(-order?.pmsLitres)),
                 totalFuelAmount: FieldValue.increment(-order?.totalPrice),
                 });
 
@@ -481,6 +489,8 @@ exports.updateStock = onCall(async (request) => {
                 .update({
                 agoLitres: FieldValue.increment(parseInt(agoLitres)),
                 pmsLitres: FieldValue.increment(parseInt(pmsLitres)),
+                availableAgoLitres: FieldValue.increment(parseInt(agoLitres)),
+                availablePmsLitres: FieldValue.increment(parseInt(pmsLitres)),
                 totalFuelAmount: FieldValue.increment(totalPrice),
                 });
 
@@ -493,6 +503,8 @@ exports.updateStock = onCall(async (request) => {
                 .update({
                 agoLitres: FieldValue.increment(parseInt(agoLitres)),
                 pmsLitres: FieldValue.increment(parseInt(pmsLitres)),
+                availableAgoLitres: FieldValue.increment(parseInt(agoLitres)),
+                availablePmsLitres: FieldValue.increment(parseInt(pmsLitres)),
                 totalFuelAmount: FieldValue.increment(totalPrice),
                 });
             } else {
@@ -527,6 +539,8 @@ exports.updateStock = onCall(async (request) => {
                 .update({
                 agoLitres: FieldValue.increment(parseInt(agoLitres)),
                 pmsLitres: FieldValue.increment(parseInt(pmsLitres)),
+                availableAgoLitres: FieldValue.increment(parseInt(agoLitres)),
+                availablePmsLitres: FieldValue.increment(parseInt(pmsLitres)),
                 totalFuelAmount: FieldValue.increment(totalPrice),
                 });
 
@@ -539,6 +553,8 @@ exports.updateStock = onCall(async (request) => {
                 .update({
                 agoLitres: FieldValue.increment(parseInt(agoLitres)),
                 pmsLitres: FieldValue.increment(parseInt(pmsLitres)),
+                availableAgoLitres: FieldValue.increment(parseInt(agoLitres)),
+                availablePmsLitres: FieldValue.increment(parseInt(pmsLitres)),
                 totalFuelAmount: FieldValue.increment(totalPrice),
                 });
             }
