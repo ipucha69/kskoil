@@ -23,7 +23,7 @@ exports.dailyCustomerFinancialStatement = onCall(async (request) => {
     const sortedData = sortDataByDate(combinedData);
     const updatedTransactions = updateBalances(sortedData, openingBalance);
 
-    const title = `Financial statement as of ${startDate} to ${endDate}`;
+    const title = `Financial statement as of ${formatMonthYear(startDate)} to ${formatMonthYear(endDate)}`;
 
     return {
       status: 200,
@@ -226,4 +226,8 @@ const formatCurrency = (value) => {
     style: "decimal",
     maximumFractionDigits: 2,
   }).format(value);
+};
+
+const formatMonthYear = (monthYear) => {
+  return moment(monthYear, "YYYY-MM-DD").format("MMM YYYY").toUpperCase();
 };
