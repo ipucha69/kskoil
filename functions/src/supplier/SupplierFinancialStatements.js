@@ -1,165 +1,178 @@
+/* eslint-disable linebreak-style */
+/* eslint-disable object-curly-spacing */
+/* eslint-disable indent */
+/* eslint-disable linebreak-style */
+/* eslint-disable no-unused-vars */
+/* eslint-disable linebreak-style */
+/* eslint-disable eol-last */
+/* eslint-disable linebreak-style */
+/* eslint-disable quotes */
+/* eslint-disable max-len */
+/* eslint-disable camelcase */
 const admin = require("firebase-admin");
 const moment = require("moment");
 const { onCall, HttpsError } = require("firebase-functions/v2/https");
 
 exports.supplierFinancialStatements = onCall(async (request) => {
-    try {
-        const data = request?.data;
-        const { id } = data;
-        console.log("id", id);
+  try {
+    const { id } = request.data;
+    console.log("id", id);
 
-        //BALANCE BD
-        let openingBalance = 0;
-        let supplier = {};
-        const supplierDoc = await admin.firestore().collection("suppliers").doc(id).collection("account").doc("info").get();
-        if (supplierDoc.exists) {
-            supplier = supplierDoc.data();
-            openingBalance += supplier.openingBalance;
+    const getSupplierDoc = async () => {
+      const supplierDoc = await admin
+        .firestore()
+        .collection("suppliers")
+        .doc(id)
+        .collection("account")
+        .doc("info")
+        .get();
+      return supplierDoc.exists ? supplierDoc.data() : {};
+    };
+
+    const getTotalFuelTaken = async () => {
+      const supplierPurchasesSnap = await admin
+        .firestore()
+        .collection("suppliers")
+        .doc(id)
+        .collection("purchases")
+        .get();
+      return supplierPurchasesSnap.empty
+        ? 0
+        : supplierPurchasesSnap.docs.reduce(
+            (total, doc) => total + (doc.data().totalPrice || 0),
+            0
+          );
+    };
+
+    const getTotalPayment = async () => {
+      const supplierPaymentsSnap = await admin
+        .firestore()
+        .collection("suppliers")
+        .doc(id)
+        .collection("payments")
+        .get();
+      return supplierPaymentsSnap.empty
+        ? 0
+        : supplierPaymentsSnap.docs.reduce(
+            (total, doc) => total + (doc.data().amount || 0),
+            0
+          );
+    };
+
+    const supplier = await getSupplierDoc();
+    const openingBalance = supplier.openingBalance || 0;
+    const fuelTaken = await getTotalFuelTaken();
+    const totalPayment = await getTotalPayment();
+    const closingBalance = openingBalance + fuelTaken - totalPayment;
+
+    const getSupplierTransactions = async (collection) => {
+      const snapshot = await admin
+        .firestore()
+        .collection("suppliers")
+        .doc(id)
+        .collection(collection)
+        .get();
+      return snapshot.empty ? [] : snapshot.docs.map((doc) => doc.data());
+    };
+
+    const formatTransaction = (transaction, day, type) => {
+      let formattedTransactions = [];
+      if (type === "expense") {
+        if (transaction.agoLitres) {
+          formattedTransactions.push([
+            day,
+            transaction.truck,
+            transaction.stationName || "",
+            "AGO",
+            transaction.agoLitres,
+            formatCurrency(transaction.agoPrice),
+            formatCurrency(transaction.agoTotalPrice),
+            "",
+            "",
+          ]);
         }
-
-        //FUEL TAKEN
-        let fuelTaken = 0;
-        const supplierPurchasesSnap = await admin.firestore().collection("suppliers").doc(id).collection("purchases").get();
-        if (!supplierPurchasesSnap.empty) {
-            supplierPurchasesSnap.forEach(doc => {
-                if ("totalPrice" in doc.data()) {
-                    fuelTaken += doc.data().totalPrice;
-                }
-            })
+        if (transaction.pmsLitres) {
+          formattedTransactions.push([
+            day,
+            transaction.truck,
+            transaction.stationName || "",
+            "PMS",
+            transaction.pmsLitres,
+            formatCurrency(transaction.pmsPrice),
+            formatCurrency(transaction.pmsTotalPrice),
+            "",
+            "",
+          ]);
         }
+      } else if (type === "payment") {
+        formattedTransactions.push([
+          day,
+          `${transaction.paymentMethod.label} Payment`,
+          transaction.stationName || "",
+          "",
+          "",
+          "",
+          "",
+          formatCurrency(transaction.amount),
+          "",
+        ]);
+      }
+      return formattedTransactions;
+    };
 
-        //PAYMENT
-        let totalPayment = 0; 
-        const supplierPaymentsSnap = await admin.firestore().collection("suppliers").doc(id).collection("payments").get();
-        if (!supplierPaymentsSnap.empty) {
-            supplierPaymentsSnap.forEach(doc => {
-                if ("amount" in doc.data()) {
-                    totalPayment += parseInt(doc.data().amount);
-                }
-            })
-        }
+    const supplierPurchases = await getSupplierTransactions("purchases");
+    const supplierPayments = await getSupplierTransactions("payments");
 
+    const formattedPurchases = supplierPurchases.flatMap((transaction) => {
+      const seconds = transaction.date.seconds || transaction.date._seconds;
+      const day = moment.unix(seconds).format("DD-MM-YYYY");
+      return formatTransaction(transaction, day, "expense");
+    });
 
-        //BALANCE CD
-        const closingBalance = openingBalance + fuelTaken - totalPayment;
+    const formattedPayments = supplierPayments.flatMap((transaction) => {
+      const seconds = transaction.date.seconds || transaction.date._seconds;
+      const day = moment.unix(seconds).format("DD-MM-YYYY");
+      return formatTransaction(transaction, day, "payment");
+    });
 
+    const combinedData = [...formattedPurchases, ...formattedPayments].sort(
+      (a, b) =>
+        new Date(a[0].split("-").reverse().join("-")) -
+        new Date(b[0].split("-").reverse().join("-"))
+    );
 
-        //TABLE CONTENTS
-        //supplier purchases
-        let supplierPurchases = [];
-        const supplierPurchaseSnap = await admin.firestore().collection("suppliers").doc(id).collection("purchases").get();
-        if (!supplierPurchaseSnap.empty) {
-            supplierPurchaseSnap.forEach(doc => {
-                const purchase = doc.data();
+    let currentBalance = openingBalance;
+    const updatedTransactions = combinedData.map((transaction) => {
+      if (transaction[3] === "AGO" || transaction[3] === "PMS") {
+        currentBalance += parseFloat(transaction[6].replace(/,/g, ""));
+      } else {
+        currentBalance -= parseFloat(transaction[7].replace(/,/g, "")) || 0;
+      }
+      transaction[8] = formatCurrency(Math.abs(currentBalance));
+      return transaction.slice(0, 9); // Remove the type from the transaction array
+    });
 
-                let seconds;
-                purchase.date.seconds? seconds = purchase.date.seconds : seconds = purchase.date._seconds;
-                const day = moment.unix(seconds).format("DD-MM-YYYY");
-
-                if ("agoLitres" in purchase) {
-                    if (purchase.agoLitres) {
-                        const detail = purchase.truck;
-                        let stationName = purchase.stationName || "";
-                        // const day = date.format("DD-MM-YYYY");
-                        const litres = purchase.agoLitres;
-                        const price = purchase.agoPrice;
-                        const amount = purchase.agoTotalPrice.toString();
-                        const paidAmount = "";
-                        const balance = "";
-                        const type = "expense"; 
-
-                        supplierPurchases.push([day, detail, stationName, litres, price, amount, paidAmount, balance, type]);
-                    }
-                }
-
-                if ("pmsLitres" in purchase) {
-                    if (purchase.pmsLitres) {
-                        // const day = date.format("DD-MM-YYYY");
-                        const detail = purchase.truck;
-                        let stationName = purchase.stationName || "";
-                        const litres = purchase.pmsLitres;
-                        const price = purchase.pmsPrice;
-                        const amount = purchase.pmsTotalPrice.toString();
-                        const paidAmount = "";
-                        const balance = "";
-                        const type = "expense"; 
-
-                        supplierPurchases.push([day, detail, stationName, litres, price, amount, paidAmount, balance, type]);
-                    }
-                }
-            })
-        }
-
-
-        //customer payment
-        let supplierPayments = [];
-        const supplierPaymentsSnaps = await admin.firestore().collection("suppliers").doc(id).collection("payments").get();
-        if (!supplierPaymentsSnaps.empty) {
-            supplierPaymentsSnaps.forEach(doc => {
-                const payment = doc.data();
-
-                let seconds;
-                payment.date.seconds? seconds = payment.date.seconds : seconds = payment.date._seconds;
-                const day = moment.unix(seconds).format("DD-MM-YYYY");
-
-                const detail = payment.paymentMethod.label;
-                let stationName = payment.stationName || "";
-                const litres = "";
-                const price = "";
-                const amount = "";
-                const paidAmount = payment.amount.toString();
-                const balance = ""; 
-                const type = "payment"; 
-
-                supplierPayments.push([day, detail, stationName, litres, price, amount, paidAmount, balance, type]);
-            })
-        }
-
-        const combinedData = [...supplierPurchases,...supplierPayments];
-
-        //Sort combined data asc using date
-        const rowData = combinedData.sort((a, b) => {
-            const [dayA, monthA, yearA] = a[0].split('-').map(Number);
-            const [dayB, monthB, yearB] = b[0].split('-').map(Number);
-            const dateA = new Date(yearA, monthA - 1, dayA);
-            const dateB = new Date(yearB, monthB - 1, dayB);
-            return dateA - dateB;
-          });
-
-
-          // update balance on each row 
-        let currentBalance = openingBalance;
-        const updatedTransactions = rowData.map(transaction => {
-            if (transaction[8] === 'expense') {
-                const expenseValue = parseInt(transaction[5], 10); // Get the expense value from index 5
-                currentBalance += expenseValue; // Subtract the expense value from the current balance
-            } else {
-            const paymentValue = parseInt(transaction[6], 10) || 0; // Get the payment value from index 6, default to 0 if empty
-            currentBalance -= paymentValue; // Add the payment value to the current balance
-            }
-            currentBalance = Math.abs(currentBalance); // Remove negative sign if present 
-            const balance = currentBalance.toString();  //convert into string
-             // Remove transaction[8] and insert the balance
-             const updatedTransaction = [...transaction.slice(0, 7), balance];
-             const sortedTransaction = [...updatedTransaction.slice(0, 8)];
- 
-             return sortedTransaction;
-        });
-
-
-        return {
-            status: 200,
-            message: "supplier financial statement is fetched successfully",
-            data: {
-                openingBalance,
-                fuelTaken,
-                totalPayment,
-                closingBalance,
-                combinedData: updatedTransactions,
-            },
-        };
-    } catch (error) {
-        console.error("Error fetching supplier financial statement:", error);
-        throw new HttpsError("internal", error.message); // Throw a meaningful error
-    }
+    return {
+      status: 200,
+      message: "Supplier financial statement is fetched successfully",
+      data: {
+        openingBalance: formatCurrency(openingBalance),
+        fuelTaken: formatCurrency(fuelTaken),
+        totalPayment: formatCurrency(totalPayment),
+        closingBalance: formatCurrency(closingBalance),
+        combinedData: updatedTransactions,
+        title: "Financial statement",
+      },
+    };
+  } catch (error) {
+    console.error("Error fetching supplier financial statement:", error);
+    throw new HttpsError("internal", error.message); // Throw a meaningful error
+  }
 });
+
+const formatCurrency = (value) => {
+    return new Intl.NumberFormat("en-US", {
+        style: "decimal",
+        maximumFractionDigits: 2,
+    }).format(value);
+};

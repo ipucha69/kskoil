@@ -23,7 +23,9 @@ exports.monthlyCustomerFinancialStatement = onCall(async (request) => {
     const sortedData = sortDataByDate(combinedData);
     const updatedTransactions = updateBalances(sortedData, openingBalance);
 
-    const title = `Financial statement from ${formatMonthYear(startMonth)} tO ${formatMonthYear(endMonth)}`;
+    const title = `Financial statement from ${formatMonthYear(
+      startMonth
+    )} tO ${formatMonthYear(endMonth)}`;
 
     return {
       status: 200,
@@ -150,10 +152,7 @@ const getCustomerPayments = async (customerId, startMonth, endMonth) => {
 
   snapshot.forEach((doc) => {
     const payment = doc.data();
-    const paymentMethod =
-      payment?.paymentMethod?.toLowerCase() === "cash"
-        ? "Cash Payment"
-        : "Bank Payment";
+    const paymentMethod = `${payment?.paymentMethod} Payment`;
     const seconds = payment.date.seconds || payment.date._seconds;
     const day = moment.unix(seconds).format("DD-MM-YYYY");
 
@@ -226,5 +225,5 @@ const formatCurrency = (value) => {
 };
 
 const formatMonthYear = (monthYear) => {
-    return moment(monthYear, "YYYY-MM").format("MMM YYYY").toUpperCase();
-  };
+  return moment(monthYear, "YYYY-MM").format("MMM YYYY").toUpperCase();
+};

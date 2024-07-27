@@ -89,6 +89,9 @@ const fetchAnalytics = require("./src/app/FetchAnalyticsData");
 const monthlySalesAnalytics = require("./src/app/MonthlySalesAnalytics");
 const dailySalesAnalytics = require("./src/app/DailySalesAnalytics");
 
+//================= STATION APP ==========================
+const fetchStationAnalytics = require("./src/app/StationAnalyticsData");
+
 exports.helloworld = helloWorld.helloWorld;
 exports.createUser = createUser.createUser;
 exports.updateUser = updateUser.updateUser;
@@ -151,3 +154,5 @@ exports.fetchSalesAccount = fetchSalesAccount.fetchSalesAccount;
 exports.fetchAnalytics = fetchAnalytics.fetchAnalytics;
 exports.monthlySalesAnalytics = monthlySalesAnalytics.monthlySalesAnalytics;
 exports.dailySalesAnalytics = dailySalesAnalytics.dailySalesAnalytics;
+
+exports.fetchStationAnalytics = fetchStationAnalytics.stationAnalyticsData;

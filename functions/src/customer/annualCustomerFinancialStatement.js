@@ -150,10 +150,7 @@ const getCustomerPayments = async (customerId, startYear, endYear) => {
 
   snapshot.forEach((doc) => {
     const payment = doc.data();
-    const paymentMethod =
-      payment?.paymentMethod?.toLowerCase() === "cash"
-        ? "Cash Payment"
-        : "Bank Payment";
+    const paymentMethod = `${payment?.paymentMethod} Payment`;
     const seconds = payment.date.seconds || payment.date._seconds;
     const day = moment.unix(seconds).format("DD-MM-YYYY");
 

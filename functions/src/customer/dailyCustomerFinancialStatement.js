@@ -153,10 +153,7 @@ const getCustomerPayments = async (customerId, startDate, endDate) => {
 
   snapshot.forEach((doc) => {
     const payment = doc.data();
-    const paymentMethod =
-      payment?.paymentMethod?.toLowerCase() === "cash"
-        ? "Cash Payment"
-        : "Bank Payment";
+    const paymentMethod = `${payment?.paymentMethod} Payment`;
     const seconds = payment.date.seconds || payment.date._seconds;
     const day = moment.unix(seconds).format("DD-MM-YYYY");
 
@@ -229,5 +226,5 @@ const formatCurrency = (value) => {
 };
 
 const formatMonthYear = (monthYear) => {
-  return moment(monthYear, "YYYY-MM-DD").format("MMM YYYY").toUpperCase();
+  return moment(monthYear, "YYYY-MM-DD").format("MMM DD YYYY").toUpperCase();
 };
