@@ -34,7 +34,7 @@ exports.createNewBook = onCall(async (request) => {
         //   .subtract(1, "day")
         //   .format("DD-MM-YYYY");
 
-        const currentDate = "06-07-2024";
+        const currentDate = "02-07-2024";
 
         // Check if a dailySalesBook already exists for the station and current date
         const existingBookQuery = await admin
