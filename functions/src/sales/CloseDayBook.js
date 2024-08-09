@@ -70,7 +70,7 @@ exports.closeDayBook = onCall(async (request) => {
         const sum = dailySalesBookData.totalCash + sum1;
 
         // Check if the sum exceeds totalSales
-        if (sum < dailySalesBookData.totalSales) {
+        if (sum < dailySalesBookData.totalSales && Math.abs(dailySalesBookData.totalSales - sum) > 100) {
         console.log({ status: "fail", sum, sale: dailySalesBookData.totalSales });
         return {
             status: 500,
