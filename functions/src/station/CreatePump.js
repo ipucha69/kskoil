@@ -30,7 +30,7 @@ exports.createPump = onCall(async (request) => {
         const created_at = Timestamp.fromDate(new Date());
         const updated_at = Timestamp.fromDate(new Date());
 
-        const omData = parseInt(om);
+        const omData = parseFloat(om);
 
         // Check for pump with same type for the station
         const pumpsQuery = await admin
