@@ -44,8 +44,8 @@ exports.createStock = onCall(async (request) => {
         const parsedAgoLitres = parseFloat(agoLitres);
         const parsedPmsLitres = parseFloat(pmsLitres);
 
-        const formattedAgoLitres = parseFloat(parsedAgoLitres.toFixed(2) || "0.00");
-        const formattedPmsLitres = parseFloat(parsedPmsLitres.toFixed(2) || "0.00");
+        const formattedAgoLitres = parseFloat(parsedAgoLitres || 0);
+        const formattedPmsLitres = parseFloat(parsedPmsLitres || 0);
 
         const totalLitres = formattedAgoLitres + formattedPmsLitres;
 
@@ -175,35 +175,29 @@ exports.createStock = onCall(async (request) => {
 
             if (stockInfo.exists) {
                 //update available details
-                async function incrementStringNumber(collectionRef, docId, fieldName, incrementBy) {
-                    const docSnapshot = await collectionRef.doc(docId).get();
-                    let currentValue = parseFloat(docSnapshot.data()[fieldName] || "0.00");
-                    currentValue += incrementBy;
-                    await collectionRef.doc(docId).update({ [fieldName]: currentValue.toString() });
-                }
-                
-                // Usage within your function
-                await incrementStringNumber(admin.firestore().collection("stock"), "info", 'agoLitres', formattedAgoLitres);
-                await incrementStringNumber(admin.firestore().collection("stock"), "info", 'pmsLitres', formattedPmsLitres);
-                await incrementStringNumber(admin.firestore().collection("stock"), "info", 'availableAgo', formattedAgoLitres);
-                await incrementStringNumber(admin.firestore().collection("stock"), "info", 'availablePms', formattedPmsLitres);
-                await incrementStringNumber(admin.firestore().collection("stock"), "info", 'totalLitres', totalLitres);
-                await incrementStringNumber(admin.firestore().collection("stock"), "info", 'totalAvailableLitres', totalLitres);
-                
+
+                const stockData = stockInfo.data();
+                const agoL = parseFloat(stockData.agoLitres) + formattedAgoLitres;
+                const pmsL = parseFloat(stockData.pmsLitres) + formattedPmsLitres;
+                const avAgoL = parseFloat(stockData.availableAgo) + formattedAgoLitres;
+                const avPmsL = parseFloat(stockData.availablePms) + formattedPmsLitres;
+                const avL = parseFloat(stockData.totalLitres) + totalLitres;
+                const avTotalL = parseFloat(stockData.totalAvailableLitres) + totalLitres;
+
                 await admin
                 .firestore()
                 .collection("stock")
                 .doc("info")
                 .update({
-                    // agoLitres: FieldValue.increment(parseInt(agoLitres)),
-                    // pmsLitres: FieldValue.increment(parseInt(pmsLitres)),
-                    // availableAgo: FieldValue.increment(parseInt(agoLitres)),
-                    // availablePms: FieldValue.increment(parseInt(pmsLitres)),
+                    agoLitres: agoL.toString(),
+                    pmsLitres: pmsL.toString(),
+                    availableAgo: avAgoL.toString(),
+                    availablePms: avPmsL.toString(),
                     totalAgoPrice: FieldValue.increment(agoTotalPrice),
                     totalPmsPrice: FieldValue.increment(pmsTotalPrice),
                     totalPrice: FieldValue.increment(totalPrice),
-                    // totalLitres: FieldValue.increment(totalLitres),
-                    // totalAvailableLitres: FieldValue.increment(totalLitres),
+                    totalLitres: avL.toString(),
+                    totalAvailableLitres: avTotalL.toString(),
                 });
             } else {
                 //create details
@@ -249,49 +243,65 @@ exports.createStock = onCall(async (request) => {
                 updated_at,
             });
 
-        async function incrementStringNumber(collectionRef, docId, fieldName, incrementBy) {
-            const docSnapshot = await collectionRef.doc(docId).get();
-            let currentValue = parseFloat(docSnapshot.data()[fieldName] || "0.00");
-            currentValue += incrementBy;
-            await collectionRef.doc(docId).update({ [fieldName]: currentValue.toString() });
-        }
-        
-        // Usage within your function
-        await incrementStringNumber(admin.firestore().collection("stationBucket"), station?.id, 'agoLitres', formattedAgoLitres);
-        await incrementStringNumber(admin.firestore().collection("stationBucket"), station?.id, 'pmsLitres', formattedPmsLitres);
-        await incrementStringNumber(admin.firestore().collection("stationBucket"), station?.id, 'availableAgoLitres', formattedAgoLitres);
-        await incrementStringNumber(admin.firestore().collection("stationBucket"), station?.id, 'availablePmsLitres', formattedPmsLitres);
-        
-        await admin
-            .firestore()
-            .collection("stationBucket")
-            .doc(station?.id)
-            .update({
-                // agoLitres: FieldValue.increment(parseInt(agoLitres)),
-                // pmsLitres: FieldValue.increment(parseInt(pmsLitres)),
-                // availableAgoLitres: FieldValue.increment(parseInt(agoLitres)),
-                // availablePmsLitres: FieldValue.increment(parseInt(pmsLitres)),
-                totalFuelAmount: FieldValue.increment(totalPrice),
-            });
+            const stockStationInfo = await admin
+                .firestore()
+                .collection("stationBucket")
+                .doc(station?.id)
+                .get();
 
-        await incrementStringNumber(admin.firestore().collection("stations").doc(station?.id).collection("account"), "info", 'agoLitres', formattedAgoLitres);
-        await incrementStringNumber(admin.firestore().collection("stations").doc(station?.id).collection("account"), "info", 'pmsLitres', formattedPmsLitres);
-        await incrementStringNumber(admin.firestore().collection("stations").doc(station?.id).collection("account"), "info", 'availableAgoLitres', formattedAgoLitres);
-        await incrementStringNumber(admin.firestore().collection("stations").doc(station?.id).collection("account"), "info", 'availablePmsLitres', formattedPmsLitres);
-        
-        await admin
+            if (stockStationInfo.exists) {
+                //update available details
+
+                const stationData = stockStationInfo.data();
+                const agoL = parseFloat(stationData.agoLitres) + formattedAgoLitres;
+                const pmsL = parseFloat(stationData.pmsLitres) + formattedPmsLitres;
+                const avAgoL = parseFloat(stationData.availableAgoLitres) + formattedAgoLitres;
+                const avPmsL = parseFloat(stationData.availablePmsLitres) + formattedPmsLitres;
+
+                await admin
+                .firestore()
+                .collection("stationBucket")
+                .doc(station?.id)
+                .update({
+                    agoLitres: agoL.toString(),
+                    pmsLitres: pmsL.toString(),
+                    availableAgoLitres: avAgoL.toString(),
+                    availablePmsLitres: avPmsL.toString(),
+                    totalFuelAmount: FieldValue.increment(totalPrice),
+                });
+            }
+
+            const stockStationProfileInfo = await admin
             .firestore()
             .collection("stations")
             .doc(station?.id)
             .collection("account")
             .doc("info")
-            .update({
-                // agoLitres: FieldValue.increment(parseInt(agoLitres)),
-                // pmsLitres: FieldValue.increment(parseInt(pmsLitres)),
-                // availableAgoLitres: FieldValue.increment(parseInt(agoLitres)),
-                // availablePmsLitres: FieldValue.increment(parseInt(pmsLitres)),
-                totalFuelAmount: FieldValue.increment(totalPrice),
-            });
+            .get();
+
+            if (stockStationProfileInfo.exists) {
+                //update available details
+
+                const stationData = stockStationProfileInfo.data();
+                const agoL = parseFloat(stationData.agoLitres) + formattedAgoLitres;
+                const pmsL = parseFloat(stationData.pmsLitres) + formattedPmsLitres;
+                const avAgoL = parseFloat(stationData.availableAgoLitres) + formattedAgoLitres;
+                const avPmsL = parseFloat(stationData.availablePmsLitres) + formattedPmsLitres;
+
+                await admin
+                .firestore()
+                .collection("stations")
+                .doc(station?.id)
+                .collection("account")
+                .doc("info")
+                .update({
+                    agoLitres: agoL.toString(),
+                    pmsLitres: pmsL.toString(),
+                    availableAgoLitres: avAgoL.toString(),
+                    availablePmsLitres: avPmsL.toString(),
+                    totalFuelAmount: FieldValue.increment(totalPrice),
+                });
+            }
         }
 
         return { status: 200, message: "Stock is added successfully" };
