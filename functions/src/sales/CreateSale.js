@@ -54,7 +54,11 @@ exports.createSale = onCall(async (request) => {
             description,
             skipped,
             stationName,
-            saleType
+            saleType,
+            availabeAgoL,
+            availabePmsL,
+            soldAgoL,
+            soldPmsL,
         } = data;
 
         const created_at = Timestamp.fromDate(new Date());
@@ -134,6 +138,30 @@ exports.createSale = onCall(async (request) => {
             });
         }
 
+        await admin
+        .firestore()
+        .collection("stationBucket")
+        .doc(stationID)
+        .update({ 
+            availableAgoLitres: availabeAgoL,
+            availablePmsLitres: availabePmsL,
+            soldAgoLitres: soldAgoL,
+            soldPmsLitres: soldPmsL,
+        });
+
+        await admin
+        .firestore()
+        .collection("stations")
+        .doc(stationID)
+        .collection("account")
+        .doc("info")
+        .update({ 
+            availableAgoLitres: availabeAgoL,
+            availablePmsLitres: availabePmsL,
+            soldAgoLitres: soldAgoL,
+            soldPmsLitres: soldPmsL,
+         });
+
         // Retrieve station pumps
         const pumpsSnapshot = await admin
             .firestore()
@@ -186,56 +214,34 @@ exports.createSale = onCall(async (request) => {
                     litres: FieldValue.increment(cmDifference)
                 });
 
-                const stationDoc = await admin.firestore().collection("stationBucket").doc(stationID).get();
-                if (stationDoc.exists) {
-                    const data = stationDoc.data();
-                    const availableAgoL = parseFloat(data?.availableAgoLitres) - cmDifference;
-                    const availablePmsL = parseFloat(data?.availablePmsLitres) - cmDifference;
-                    const soldAgoL = parseFloat(data?.soldAgoLitres) + cmDifference;
-                    const soldPmsL = parseFloat(data?.soldPmsLitres) + cmDifference;
 
-
-                    await admin
-                    .firestore()
-                    .collection("stationBucket")
-                    .doc(stationID)
-                    .update({ 
-                        availableAgoLitres: typeName === "AGO" ? availableAgoL.toString() : data?.availableAgoLitres,
-                        availablePmsLitres: typeName === "PMS" ? availablePmsL.toString() : data?.availablePmsLitres,
-                        soldAgoLitres: typeName === "AGO" ? soldAgoL.toString() : data?.soldAgoLitres,
-                        soldPmsLitres: typeName === "PMS" ? soldPmsL.toString() : data?.soldPmsLitres,
-                        litres: FieldValue.increment(cmDifference),
-                        totalSalesAmount: FieldValue.increment(amountDifference),
-                     });
-                }
-
-                 const stationProfileDoc = await admin.firestore().collection("stationBucket").doc(stationID).collection("account").doc("info").get();
-                 if (stationProfileDoc.exists) {
-                     const data = stationProfileDoc.data();
-                     const availableAgoL = parseFloat(data?.availableAgoLitres) - cmDifference;
-                     const availablePmsL = parseFloat(data?.availablePmsLitres) - cmDifference;
-                     const soldAgoL = parseFloat(data?.soldAgoLitres) + cmDifference;
-                     const soldPmsL = parseFloat(data?.soldPmsLitres) + cmDifference;
-                     console.log('doc exist', availableAgoL,
-                        availablePmsL,
-                        soldAgoL,
-                        soldPmsL)
+                await admin
+                .firestore()
+                .collection("stationBucket")
+                .doc(stationID)
+                .update({ 
+                    // availableAgoLitres: typeName === "AGO" ? availableAgoL.toString() : data?.availableAgoLitres,
+                    // availablePmsLitres: typeName === "PMS" ? availablePmsL.toString() : data?.availablePmsLitres,
+                    // soldAgoLitres: typeName === "AGO" ? soldAgoL.toString() : data?.soldAgoLitres,
+                    // soldPmsLitres: typeName === "PMS" ? soldPmsL.toString() : data?.soldPmsLitres,
+                    litres: FieldValue.increment(cmDifference),
+                    totalSalesAmount: FieldValue.increment(amountDifference),
+                });
  
-                     await admin
-                     .firestore()
-                     .collection("stations")
-                     .doc(stationID)
-                     .collection("account")
-                     .doc("info")
-                     .update({ 
-                         availableAgoLitres: typeName === "AGO" ? availableAgoL.toString() : data?.availableAgoLitres,
-                         availablePmsLitres: typeName === "PMS" ? availablePmsL.toString() : data?.availablePmsLitres,
-                         soldAgoLitres: typeName === "AGO" ? soldAgoL.toString() : data?.soldAgoLitres,
-                         soldPmsLitres: typeName === "PMS" ? soldPmsL.toString() : data?.soldPmsLitres,
-                         litres: FieldValue.increment(cmDifference),
-                         totalSalesAmount: FieldValue.increment(amountDifference),
-                      });
-                 }
+                await admin
+                .firestore()
+                .collection("stations")
+                .doc(stationID)
+                .collection("account")
+                .doc("info")
+                .update({ 
+                //  availableAgoLitres: typeName === "AGO" ? availableAgoL.toString() : data?.availableAgoLitres,
+                //  availablePmsLitres: typeName === "PMS" ? availablePmsL.toString() : data?.availablePmsLitres,
+                //  soldAgoLitres: typeName === "AGO" ? soldAgoL.toString() : data?.soldAgoLitres,
+                //  soldPmsLitres: typeName === "PMS" ? soldPmsL.toString() : data?.soldPmsLitres,
+                    litres: FieldValue.increment(cmDifference),
+                    totalSalesAmount: FieldValue.increment(amountDifference),
+                });
 
                 await admin.firestore().collection("pumpDaySalesBook").doc(stationID).collection(day).doc(pumpID).update({
                     cm: FieldValue.increment(cmDifference),
@@ -307,57 +313,33 @@ exports.createSale = onCall(async (request) => {
                     saleType
                 });
 
-                const stationDoc = await admin.firestore().collection("stationBucket").doc(stationID).get();
-                if (stationDoc.exists) {
-                    const data = stationDoc.data();
-                    const availableAgoL = parseFloat(data?.availableAgoLitres) - diff;
-                    const availablePmsL = parseFloat(data?.availablePmsLitres) - diff;
-                    const soldAgoL = parseFloat(data?.soldAgoLitres) + diff;
-                    const soldPmsL = parseFloat(data?.soldPmsLitres) + diff;
+                await admin
+                .firestore()
+                .collection("stationBucket")
+                .doc(stationID)
+                .update({ 
+                    // availableAgoLitres: typeName === "AGO" ? availableAgoL.toString() : data?.availableAgoLitres,
+                    // availablePmsLitres: typeName === "PMS" ? availablePmsL.toString() : data?.availablePmsLitres,
+                    // soldAgoLitres: typeName === "AGO" ? soldAgoL.toString() : data?.soldAgoLitres,
+                    // soldPmsLitres: typeName === "PMS" ? soldPmsL.toString() : data?.soldPmsLitres,
+                    litres: FieldValue.increment(diff),
+                    totalSalesAmount: FieldValue.increment(amount),
+                });
 
-
-                    await admin
-                    .firestore()
-                    .collection("stationBucket")
-                    .doc(stationID)
-                    .update({ 
-                        availableAgoLitres: typeName === "AGO" ? availableAgoL.toString() : data?.availableAgoLitres,
-                        availablePmsLitres: typeName === "PMS" ? availablePmsL.toString() : data?.availablePmsLitres,
-                        soldAgoLitres: typeName === "AGO" ? soldAgoL.toString() : data?.soldAgoLitres,
-                        soldPmsLitres: typeName === "PMS" ? soldPmsL.toString() : data?.soldPmsLitres,
-                        litres: FieldValue.increment(diff),
-                        totalSalesAmount: FieldValue.increment(amount),
-                     });
-                }
-
-                const stationProfileDoc = await admin.firestore().collection("stationBucket").doc(stationID).collection("account").doc("info").get();
-                if (stationProfileDoc.exists) {
-                    const data = stationProfileDoc.data();
-                    const availableAgoL = parseFloat(data?.availableAgoLitres) - diff;
-                    const availablePmsL = parseFloat(data?.availablePmsLitres) - diff;
-                    const soldAgoL = parseFloat(data?.soldAgoLitres) + diff;
-                    const soldPmsL = parseFloat(data?.soldPmsLitres) + diff;
-
-                    console.log('doc not exist', availableAgoL,
-                        availablePmsL,
-                        soldAgoL,
-                        soldPmsL)
-
-                    await admin
-                    .firestore()
-                    .collection("stations")
-                    .doc(stationID)
-                    .collection("account")
-                    .doc("info")
-                    .update({ 
-                        availableAgoLitres: typeName === "AGO" ? availableAgoL.toString() : data?.availableAgoLitres,
-                        availablePmsLitres: typeName === "PMS" ? availablePmsL.toString() : data?.availablePmsLitres,
-                        soldAgoLitres: typeName === "AGO" ? soldAgoL.toString() : data?.soldAgoLitres,
-                        soldPmsLitres: typeName === "PMS" ? soldPmsL.toString() : data?.soldPmsLitres,
-                        litres: FieldValue.increment(diff),
-                        totalSalesAmount: FieldValue.increment(amount),
-                     });
-                }
+                await admin
+                .firestore()
+                .collection("stations")
+                .doc(stationID)
+                .collection("account")
+                .doc("info")
+                .update({ 
+                    // availableAgoLitres: typeName === "AGO" ? availableAgoL.toString() : data?.availableAgoLitres,
+                    // availablePmsLitres: typeName === "PMS" ? availablePmsL.toString() : data?.availablePmsLitres,
+                    // soldAgoLitres: typeName === "AGO" ? soldAgoL.toString() : data?.soldAgoLitres,
+                    // soldPmsLitres: typeName === "PMS" ? soldPmsL.toString() : data?.soldPmsLitres,
+                    litres: FieldValue.increment(diff),
+                    totalSalesAmount: FieldValue.increment(amount),
+                });
 
                  await admin
                 .firestore()
@@ -411,79 +393,6 @@ exports.createSale = onCall(async (request) => {
                 }
             }
         }
-
-
-        // // Assuming pumpsSnapshot is already defined and contains your documents
-        // const pumpPromises = [];
-
-        // for (const doc of pumpsSnapshot.docs) {
-        //     const pumpData = doc.data();
-        //     const { typeName, name } = pumpData;
-
-        //     if (typeName === "AGO" || typeName === "PMS") {
-        //         let om, cm, price;
-
-        //         switch (name) {
-        //             case 1:
-        //                 om = typeName === "AGO" ? omAGO1 : omPMS1;
-        //                 cm = typeName === "AGO" ? cmAGO1 : cmPMS1;
-        //                 price = typeName === "AGO" ? agoPrice : pmsPrice;
-        //                 pumpPromises.push(setPumpSalesData({
-        //                     om,
-        //                     cm,
-        //                     price,
-        //                     name,
-        //                     typeName,
-        //                     pumpID: pumpData?.pumpID,
-        //                 }));
-        //                 break;
-        //             case 2:
-        //                 om = typeName === "AGO" ? omAGO2 : omPMS2;
-        //                 cm = typeName === "AGO" ? cmAGO2 : cmPMS2;
-        //                 price = typeName === "AGO" ? agoPrice : pmsPrice;
-        //                 pumpPromises.push(setPumpSalesData({
-        //                 om,
-        //                 cm,
-        //                 price,
-        //                 name,
-        //                 typeName,
-        //                 pumpID: pumpData?.pumpID,
-        //                 }));
-        //                 break;
-        //             case 3:
-        //                 om = typeName === "AGO" ? omAGO3 : omPMS3;
-        //                 cm = typeName === "AGO" ? cmAGO3 : cmPMS3;
-        //                 price = typeName === "AGO" ? agoPrice : pmsPrice;
-        //                 pumpPromises.push(setPumpSalesData({
-        //                 om,
-        //                 cm,
-        //                 price,
-        //                 name,
-        //                 typeName,
-        //                 pumpID: pumpData?.pumpID,
-        //                 }));
-        //                 break;
-        //             case 4:
-        //                 om = typeName === "AGO" ? omAGO4 : omPMS4;
-        //                 cm = typeName === "AGO" ? cmAGO4 : cmPMS4;
-        //                 price = typeName === "AGO" ? agoPrice : pmsPrice;
-        //                 pumpPromises.push(setPumpSalesData({
-        //                 om,
-        //                 cm,
-        //                 price,
-        //                 name,
-        //                 typeName,
-        //                 pumpID: pumpData?.pumpID,
-        //                 }));
-        //                 break;
-        //             default:
-        //                 break;
-        //         }
-        //     }
-        // }
-
-        // // Wait for all promises to resolve
-        // await Promise.all(pumpPromises);
 
         pumpsSnapshot.forEach(async (doc) => {
             const pumpData = doc.data();
