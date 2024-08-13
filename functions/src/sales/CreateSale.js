@@ -54,17 +54,15 @@ exports.createSale = onCall(async (request) => {
             description,
             skipped,
             stationName,
-            saleType
+            saleType,
+            availabeAgoL,
+            availabePmsL,
+            soldAgoL,
+            soldPmsL,
         } = data;
 
         const created_at = Timestamp.fromDate(new Date());
         const updated_at = Timestamp.fromDate(new Date());
-
-        console.log({
-            cmAGO1,
-            cmAGO2,
-            cmAGO3,
-            cmAGO4})
 
         //update day sales book
         await admin
@@ -140,6 +138,30 @@ exports.createSale = onCall(async (request) => {
             });
         }
 
+        await admin
+        .firestore()
+        .collection("stationBucket")
+        .doc(stationID)
+        .update({ 
+            availableAgoLitres: availabeAgoL,
+            availablePmsLitres: availabePmsL,
+            soldAgoLitres: soldAgoL,
+            soldPmsLitres: soldPmsL,
+        });
+
+        await admin
+        .firestore()
+        .collection("stations")
+        .doc(stationID)
+        .collection("account")
+        .doc("info")
+        .update({ 
+            availableAgoLitres: availabeAgoL,
+            availablePmsLitres: availabePmsL,
+            soldAgoLitres: soldAgoL,
+            soldPmsLitres: soldPmsL,
+         });
+
         // Retrieve station pumps
         const pumpsSnapshot = await admin
             .firestore()
@@ -192,48 +214,20 @@ exports.createSale = onCall(async (request) => {
                     litres: FieldValue.increment(cmDifference)
                 });
 
-                async function incrementStringNumber(collectionRef, docId, fieldName, incrementBy) {
-                    const docSnapshot = await collectionRef.doc(docId).get();
-                    let currentValue = parseFloat(docSnapshot.data()[fieldName] || "0.00");
-                    currentValue += incrementBy;
-                    await collectionRef.doc(docId).update({ [fieldName]: currentValue.toString() });
-                }
-                
-                // Usage within your function
-                if (typeName === "AGO") {
-                    await incrementStringNumber(admin.firestore().collection("stationBucket"), stationID, "availableAgoLitres", -diff);
-                    await incrementStringNumber(admin.firestore().collection("stationBucket"), stationID, "soldAgoLitres", diff);
-                }
-
-                if (typeName === "PMS") {
-                    await incrementStringNumber(admin.firestore().collection("stationBucket"), stationID, "availablePmsLitres", -diff);
-                    await incrementStringNumber(admin.firestore().collection("stationBucket"), stationID, "soldPmsLitres", diff);
-                }
-
 
                 await admin
                 .firestore()
                 .collection("stationBucket")
                 .doc(stationID)
                 .update({ 
-                    // availableAgoLitres: typeName === "AGO" ? FieldValue.increment(-cmDifference) : FieldValue.increment(0),
-                    // availablePmsLitres: typeName === "PMS" ? FieldValue.increment(-cmDifference) : FieldValue.increment(0),
-                    // soldAgoLitres: typeName === "AGO" ? FieldValue.increment(cmDifference) : FieldValue.increment(0), 
-                    // soldPmsLitres: typeName === "PMS" ? FieldValue.increment(cmDifference) : FieldValue.increment(0),
+                    // availableAgoLitres: typeName === "AGO" ? availableAgoL.toString() : data?.availableAgoLitres,
+                    // availablePmsLitres: typeName === "PMS" ? availablePmsL.toString() : data?.availablePmsLitres,
+                    // soldAgoLitres: typeName === "AGO" ? soldAgoL.toString() : data?.soldAgoLitres,
+                    // soldPmsLitres: typeName === "PMS" ? soldPmsL.toString() : data?.soldPmsLitres,
                     litres: FieldValue.increment(cmDifference),
                     totalSalesAmount: FieldValue.increment(amountDifference),
-                 });
-
-                 if (typeName === "AGO") {
-                    await incrementStringNumber(admin.firestore().collection("stations").doc(stationID).collection("account"), stationID, "availableAgoLitres", -diff);
-                    await incrementStringNumber(admin.firestore().collection("stations").doc(stationID).collection("account"), stationID, "soldAgoLitres", diff);
-                }
-
-                if (typeName === "PMS") {
-                    await incrementStringNumber(admin.firestore().collection("stations").doc(stationID).collection("account"), "info", "availablePmsLitres", -diff);
-                    await incrementStringNumber(admin.firestore().collection("stations").doc(stationID).collection("account"), "info", "soldPmsLitres", diff);
-                }
-
+                });
+ 
                 await admin
                 .firestore()
                 .collection("stations")
@@ -241,13 +235,13 @@ exports.createSale = onCall(async (request) => {
                 .collection("account")
                 .doc("info")
                 .update({ 
-                    // availableAgoLitres: typeName === "AGO" ? FieldValue.increment(-cmDifference) : FieldValue.increment(0),
-                    // availablePmsLitres: typeName === "PMS" ? FieldValue.increment(-cmDifference) : FieldValue.increment(0),
-                    // soldAgoLitres: typeName === "AGO" ? FieldValue.increment(cmDifference) : FieldValue.increment(0), 
-                    // soldPmsLitres: typeName === "PMS" ? FieldValue.increment(cmDifference) : FieldValue.increment(0),
+                //  availableAgoLitres: typeName === "AGO" ? availableAgoL.toString() : data?.availableAgoLitres,
+                //  availablePmsLitres: typeName === "PMS" ? availablePmsL.toString() : data?.availablePmsLitres,
+                //  soldAgoLitres: typeName === "AGO" ? soldAgoL.toString() : data?.soldAgoLitres,
+                //  soldPmsLitres: typeName === "PMS" ? soldPmsL.toString() : data?.soldPmsLitres,
                     litres: FieldValue.increment(cmDifference),
                     totalSalesAmount: FieldValue.increment(amountDifference),
-                 });
+                });
 
                 await admin.firestore().collection("pumpDaySalesBook").doc(stationID).collection(day).doc(pumpID).update({
                     cm: FieldValue.increment(cmDifference),
@@ -319,46 +313,18 @@ exports.createSale = onCall(async (request) => {
                     saleType
                 });
 
-                async function incrementStringNumber(collectionRef, docId, fieldName, incrementBy) {
-                    const docSnapshot = await collectionRef.doc(docId).get();
-                    let currentValue = parseFloat(docSnapshot.data()[fieldName] || "0.00");
-                    currentValue += incrementBy;
-                    await collectionRef.doc(docId).update({ [fieldName]: currentValue.toString() });
-                }
-                
-                // Usage within your function
-                if (typeName === "AGO") {
-                    await incrementStringNumber(admin.firestore().collection("stationBucket"), stationID, "availableAgoLitres", -diff);
-                    await incrementStringNumber(admin.firestore().collection("stationBucket"), stationID, "soldAgoLitres", diff);
-                }
-
-                if (typeName === "PMS") {
-                    await incrementStringNumber(admin.firestore().collection("stationBucket"), stationID, "availablePmsLitres", -diff);
-                    await incrementStringNumber(admin.firestore().collection("stationBucket"), stationID, "soldPmsLitres", diff);
-                }
-
                 await admin
                 .firestore()
                 .collection("stationBucket")
                 .doc(stationID)
                 .update({ 
-                    // availableAgoLitres: typeName === "AGO" ? FieldValue.increment(-diff) : FieldValue.increment(0),
-                    // availablePmsLitres: typeName === "PMS" ? FieldValue.increment(-diff) : FieldValue.increment(0),
-                    // soldAgoLitres: typeName === "AGO" ? FieldValue.increment(diff) : FieldValue.increment(0), 
-                    // soldPmsLitres: typeName === "PMS" ? FieldValue.increment(diff) : FieldValue.increment(0),
+                    // availableAgoLitres: typeName === "AGO" ? availableAgoL.toString() : data?.availableAgoLitres,
+                    // availablePmsLitres: typeName === "PMS" ? availablePmsL.toString() : data?.availablePmsLitres,
+                    // soldAgoLitres: typeName === "AGO" ? soldAgoL.toString() : data?.soldAgoLitres,
+                    // soldPmsLitres: typeName === "PMS" ? soldPmsL.toString() : data?.soldPmsLitres,
                     litres: FieldValue.increment(diff),
                     totalSalesAmount: FieldValue.increment(amount),
-                 });
-
-                 if (typeName === "AGO") {
-                    await incrementStringNumber(admin.firestore().collection("stations").doc(stationID).collection("account"), stationID, "availableAgoLitres", -diff);
-                    await incrementStringNumber(admin.firestore().collection("stations").doc(stationID).collection("account"), stationID, "soldAgoLitres", diff);
-                }
-
-                if (typeName === "PMS") {
-                    await incrementStringNumber(admin.firestore().collection("stations").doc(stationID).collection("account"), "info", "availablePmsLitres", -diff);
-                    await incrementStringNumber(admin.firestore().collection("stations").doc(stationID).collection("account"), "info", "soldPmsLitres", diff);
-                }
+                });
 
                 await admin
                 .firestore()
@@ -367,13 +333,13 @@ exports.createSale = onCall(async (request) => {
                 .collection("account")
                 .doc("info")
                 .update({ 
-                    // availableAgoLitres: typeName === "AGO" ? FieldValue.increment(-diff) : FieldValue.increment(0),
-                    // availablePmsLitres: typeName === "PMS" ? FieldValue.increment(-diff) : FieldValue.increment(0),
-                    // soldAgoLitres: typeName === "AGO" ? FieldValue.increment(diff) : FieldValue.increment(0), 
-                    // soldPmsLitres: typeName === "PMS" ? FieldValue.increment(diff) : FieldValue.increment(0),
+                    // availableAgoLitres: typeName === "AGO" ? availableAgoL.toString() : data?.availableAgoLitres,
+                    // availablePmsLitres: typeName === "PMS" ? availablePmsL.toString() : data?.availablePmsLitres,
+                    // soldAgoLitres: typeName === "AGO" ? soldAgoL.toString() : data?.soldAgoLitres,
+                    // soldPmsLitres: typeName === "PMS" ? soldPmsL.toString() : data?.soldPmsLitres,
                     litres: FieldValue.increment(diff),
                     totalSalesAmount: FieldValue.increment(amount),
-                 });
+                });
 
                  await admin
                 .firestore()
