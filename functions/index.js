@@ -82,6 +82,7 @@ const updateExpense = require("./src/sales/UpdateExpense");
 const closeDayBook = require("./src/sales/CloseDayBook");
 const fetchSalesBook = require("./src/sales/FetchSalesBook");
 const fetchSalesAccount = require("./src/sales/FetchSalesAccount");
+const createExcessStock = require("./src/sales/CreateExcessStock");
 
 
 //================= APP ==========================
@@ -149,6 +150,7 @@ exports.updateExpense = updateExpense.updateExpense;
 exports.closeDayBook = closeDayBook.closeDayBook;
 exports.fetchSalesBook = fetchSalesBook.fetchSalesBook;
 exports.fetchSalesAccount = fetchSalesAccount.fetchSalesAccount;
+exports.createExcessStock = createExcessStock.createExcessStock;
 
 
 exports.fetchAnalytics = fetchAnalytics.fetchAnalytics;
