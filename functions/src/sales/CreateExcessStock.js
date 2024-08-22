@@ -27,7 +27,6 @@ exports.createExcessStock = onCall(async (request) => {
             agoTotalPrice,
             pmsTotalPrice,
             totalPrice,
-            date,
             day,
             station,
             description,
@@ -46,6 +45,7 @@ exports.createExcessStock = onCall(async (request) => {
 
         const created_at = Timestamp.fromDate(new Date());
         const updated_at = Timestamp.fromDate(new Date());
+        const date = Timestamp.fromDate(new Date());
 
         // const totalLitres = parseInt(agoLitres || "0") + parseInt(pmsLitres || "0");
 
