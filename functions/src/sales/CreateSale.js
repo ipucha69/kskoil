@@ -167,7 +167,7 @@ exports.createSale = onCall(async (request) => {
       .get();
 
     async function setPumpSalesData({ om, cm, price, name, typeName, pumpID }) {
-      const diff = cm - om;
+      const diff = parseFloat((cm - om).toFixed(2));
       const amount = diff * price;
       const pumpSalesRef = admin
         .firestore()
@@ -279,7 +279,7 @@ exports.createSale = onCall(async (request) => {
         }
       } else {
         // If no existing pump sale found, proceed to add a new pump sale
-        const diff = cm - om;
+        const diff = parseFloat((cm - om).toFixed(2));
         const amount = diff * price;
         const pumpRef = await admin
           .firestore()

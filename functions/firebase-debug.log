@@ -1,0 +1,120 @@
+[debug] [2024-09-08T21:12:22.078Z] ----------------------------------------------------------------------
+[debug] [2024-09-08T21:12:22.085Z] Command:       C:\Program Files\nodejs\node.exe C:\Program Files\nodejs\node_modules\firebase-tools\lib\bin\firebase.js deploy --only functions:createPriceTwoSale
+[debug] [2024-09-08T21:12:22.086Z] CLI Version:   13.16.0
+[debug] [2024-09-08T21:12:22.087Z] Platform:      win32
+[debug] [2024-09-08T21:12:22.087Z] Node Version:  v18.17.0
+[debug] [2024-09-08T21:12:22.090Z] Time:          Mon Sep 09 2024 00:12:22 GMT+0300 (East Africa Time)
+[debug] [2024-09-08T21:12:22.092Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-09-08T21:12:22.130Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2024-09-08T21:12:22.521Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-09-08T21:12:22.522Z] > authorizing via signed-in user (tjohanseny99@gmail.com)
+[debug] [2024-09-08T21:12:22.523Z] [iam] checking project ksk-oil for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2024-09-08T21:12:22.525Z] > refreshing access token with scopes: []
+[debug] [2024-09-08T21:12:22.528Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2024-09-08T21:12:22.529Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-09-08T21:12:23.049Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2024-09-08T21:12:23.050Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-09-08T21:12:23.101Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/ksk-oil:testIamPermissions [none]
+[debug] [2024-09-08T21:12:23.102Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/ksk-oil:testIamPermissions x-goog-quota-user=projects/ksk-oil
+[debug] [2024-09-08T21:12:23.102Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/ksk-oil:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2024-09-08T21:12:23.770Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2024-09-08T21:12:23.771Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[debug] [2024-09-08T21:12:24.965Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/ksk-oil:testIamPermissions 200
+[debug] [2024-09-08T21:12:24.965Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/ksk-oil:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2024-09-08T21:12:24.966Z] >>> [apiv2][query] POST https://iam.googleapis.com/v1/projects/ksk-oil/serviceAccounts/ksk-oil@appspot.gserviceaccount.com:testIamPermissions [none]
+[debug] [2024-09-08T21:12:24.967Z] >>> [apiv2][body] POST https://iam.googleapis.com/v1/projects/ksk-oil/serviceAccounts/ksk-oil@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[debug] [2024-09-08T21:12:26.801Z] <<< [apiv2][status] POST https://iam.googleapis.com/v1/projects/ksk-oil/serviceAccounts/ksk-oil@appspot.gserviceaccount.com:testIamPermissions 200
+[debug] [2024-09-08T21:12:26.801Z] <<< [apiv2][body] POST https://iam.googleapis.com/v1/projects/ksk-oil/serviceAccounts/ksk-oil@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[info] 
+[info] === Deploying to 'ksk-oil'...
+[info] 
+[info] i  deploying functions 
+[debug] [2024-09-08T21:12:26.813Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/ksk-oil [none]
+[debug] [2024-09-08T21:12:27.400Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/ksk-oil 200
+[debug] [2024-09-08T21:12:27.400Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/ksk-oil {"projectId":"ksk-oil","projectNumber":"272191890678","displayName":"KSK OIL","name":"projects/ksk-oil","resources":{"hostingSite":"ksk-oil","storageBucket":"ksk-oil.appspot.com","locationId":"us-central"},"state":"ACTIVE","etag":"1_46439aca-ffca-4c11-b5ee-2283886b147a"}
+[info] i  functions: preparing codebase default for deployment 
+[info] i  functions: ensuring required API cloudfunctions.googleapis.com is enabled... 
+[info] i  functions: ensuring required API cloudbuild.googleapis.com is enabled... 
+[info] i  artifactregistry: ensuring required API artifactregistry.googleapis.com is enabled... 
+[debug] [2024-09-08T21:12:27.406Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/cloudfunctions.googleapis.com [none]
+[debug] [2024-09-08T21:12:27.406Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/cloudfunctions.googleapis.com x-goog-quota-user=projects/ksk-oil
+[debug] [2024-09-08T21:12:27.410Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/runtimeconfig.googleapis.com [none]
+[debug] [2024-09-08T21:12:27.410Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/runtimeconfig.googleapis.com x-goog-quota-user=projects/ksk-oil
+[debug] [2024-09-08T21:12:27.414Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/cloudbuild.googleapis.com [none]
+[debug] [2024-09-08T21:12:27.414Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/cloudbuild.googleapis.com x-goog-quota-user=projects/ksk-oil
+[debug] [2024-09-08T21:12:27.417Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/artifactregistry.googleapis.com [none]
+[debug] [2024-09-08T21:12:27.417Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/artifactregistry.googleapis.com x-goog-quota-user=projects/ksk-oil
+[debug] [2024-09-08T21:12:29.389Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/runtimeconfig.googleapis.com 200
+[debug] [2024-09-08T21:12:29.389Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/runtimeconfig.googleapis.com [omitted]
+[debug] [2024-09-08T21:12:29.391Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/artifactregistry.googleapis.com 200
+[debug] [2024-09-08T21:12:29.391Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/artifactregistry.googleapis.com [omitted]
+[info] +  artifactregistry: required API artifactregistry.googleapis.com is enabled 
+[debug] [2024-09-08T21:12:29.399Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/cloudfunctions.googleapis.com 200
+[debug] [2024-09-08T21:12:29.399Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/ksk-oil/services/cloudfunctions.googleapis.com [omitted]
+[info] +  functions: required API cloudfunctions.googleapis.com is enabled 
+[debug] [2024-09-08T21:13:30.102Z] ----------------------------------------------------------------------
+[debug] [2024-09-08T21:13:30.106Z] Command:       C:\Program Files\nodejs\node.exe C:\Program Files\nodejs\node_modules\firebase-tools\lib\bin\firebase.js deploy --only functions:createPriceTwoSale
+[debug] [2024-09-08T21:13:30.107Z] CLI Version:   13.16.0
+[debug] [2024-09-08T21:13:30.107Z] Platform:      win32
+[debug] [2024-09-08T21:13:30.108Z] Node Version:  v18.17.0
+[debug] [2024-09-08T21:13:30.109Z] Time:          Mon Sep 09 2024 00:13:30 GMT+0300 (East Africa Time)
+[debug] [2024-09-08T21:13:30.110Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-09-08T21:13:30.247Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-09-08T21:13:30.248Z] > authorizing via signed-in user (tjohanseny99@gmail.com)
+[debug] [2024-09-08T21:13:30.248Z] [iam] checking project ksk-oil for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2024-09-08T21:13:30.252Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/ksk-oil:testIamPermissions [none]
+[debug] [2024-09-08T21:13:30.252Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/ksk-oil:testIamPermissions x-goog-quota-user=projects/ksk-oil
+[debug] [2024-09-08T21:13:30.252Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/ksk-oil:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2024-09-08T21:13:31.931Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/ksk-oil:testIamPermissions 200
+[debug] [2024-09-08T21:13:31.932Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/ksk-oil:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2024-09-08T21:13:31.932Z] >>> [apiv2][query] POST https://iam.googleapis.com/v1/projects/ksk-oil/serviceAccounts/ksk-oil@appspot.gserviceaccount.com:testIamPermissions [none]
+[debug] [2024-09-08T21:13:31.932Z] >>> [apiv2][body] POST https://iam.googleapis.com/v1/projects/ksk-oil/serviceAccounts/ksk-oil@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[debug] [2024-09-08T21:13:33.495Z] <<< [apiv2][status] POST https://iam.googleapis.com/v1/projects/ksk-oil/serviceAccounts/ksk-oil@appspot.gserviceaccount.com:testIamPermissions 200
+[debug] [2024-09-08T21:13:33.496Z] <<< [apiv2][body] POST https://iam.googleapis.com/v1/projects/ksk-oil/serviceAccounts/ksk-oil@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[info] 
+[info] === Deploying to 'ksk-oil'...
+[info] 
+[info] i  deploying functions 
+[debug] [2024-09-08T21:13:33.501Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/ksk-oil [none]
+[debug] [2024-09-08T21:13:54.559Z] *** [apiv2] error from fetch(https://firebase.googleapis.com/v1beta1/projects/ksk-oil, {"headers":{},"method":"GET","signal":{}}): FetchError: request to https://firebase.googleapis.com/v1beta1/projects/ksk-oil failed, reason: connect ETIMEDOUT 172.217.170.170:443
+[debug] [2024-09-08T21:13:54.560Z] Failed to make request to https://firebase.googleapis.com/v1beta1/projects/ksk-oil (original: request to https://firebase.googleapis.com/v1beta1/projects/ksk-oil failed, reason: connect ETIMEDOUT 172.217.170.170:443)
+[debug] [2024-09-08T21:13:54.991Z] FirebaseError: Failed to make request to https://firebase.googleapis.com/v1beta1/projects/ksk-oil
+    at RetryOperation._fn (C:\Users\DELL 7400\AppData\Roaming\nvm\v18.17.0\node_modules\firebase-tools\lib\apiv2.js:259:31)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+[error] 
+[error] Error: Failed to get Firebase project ksk-oil. Please make sure the project exists and your account has permission to access it.
+[debug] [2024-09-08T21:14:15.470Z] ----------------------------------------------------------------------
+[debug] [2024-09-08T21:14:15.473Z] Command:       C:\Program Files\nodejs\node.exe C:\Program Files\nodejs\node_modules\firebase-tools\lib\bin\firebase.js deploy --only functions:createPriceTwoSale
+[debug] [2024-09-08T21:14:15.474Z] CLI Version:   13.16.0
+[debug] [2024-09-08T21:14:15.475Z] Platform:      win32
+[debug] [2024-09-08T21:14:15.475Z] Node Version:  v18.17.0
+[debug] [2024-09-08T21:14:15.476Z] Time:          Mon Sep 09 2024 00:14:15 GMT+0300 (East Africa Time)
+[debug] [2024-09-08T21:14:15.477Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-09-08T21:14:15.601Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-09-08T21:14:15.602Z] > authorizing via signed-in user (tjohanseny99@gmail.com)
+[debug] [2024-09-08T21:14:15.602Z] [iam] checking project ksk-oil for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2024-09-08T21:14:15.606Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/ksk-oil:testIamPermissions [none]
+[debug] [2024-09-08T21:14:15.606Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/ksk-oil:testIamPermissions x-goog-quota-user=projects/ksk-oil
+[debug] [2024-09-08T21:14:15.607Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/ksk-oil:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2024-09-08T21:14:17.276Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/ksk-oil:testIamPermissions 200
+[debug] [2024-09-08T21:14:17.276Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/ksk-oil:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2024-09-08T21:14:17.277Z] >>> [apiv2][query] POST https://iam.googleapis.com/v1/projects/ksk-oil/serviceAccounts/ksk-oil@appspot.gserviceaccount.com:testIamPermissions [none]
+[debug] [2024-09-08T21:14:17.277Z] >>> [apiv2][body] POST https://iam.googleapis.com/v1/projects/ksk-oil/serviceAccounts/ksk-oil@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[debug] [2024-09-08T21:14:18.852Z] <<< [apiv2][status] POST https://iam.googleapis.com/v1/projects/ksk-oil/serviceAccounts/ksk-oil@appspot.gserviceaccount.com:testIamPermissions 200
+[debug] [2024-09-08T21:14:18.853Z] <<< [apiv2][body] POST https://iam.googleapis.com/v1/projects/ksk-oil/serviceAccounts/ksk-oil@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[info] 
+[info] === Deploying to 'ksk-oil'...
+[info] 
+[info] i  deploying functions 
+[debug] [2024-09-08T21:14:18.858Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/ksk-oil [none]
+[debug] [2024-09-08T21:14:39.911Z] *** [apiv2] error from fetch(https://firebase.googleapis.com/v1beta1/projects/ksk-oil, {"headers":{},"method":"GET","signal":{}}): FetchError: request to https://firebase.googleapis.com/v1beta1/projects/ksk-oil failed, reason: connect ETIMEDOUT 172.217.170.170:443
+[debug] [2024-09-08T21:14:39.911Z] Failed to make request to https://firebase.googleapis.com/v1beta1/projects/ksk-oil (original: request to https://firebase.googleapis.com/v1beta1/projects/ksk-oil failed, reason: connect ETIMEDOUT 172.217.170.170:443)
+[debug] [2024-09-08T21:14:44.931Z] Error: Timed out.
+    at Timeout._onTimeout (C:\Users\DELL 7400\AppData\Roaming\nvm\v18.17.0\node_modules\firebase-tools\lib\utils.js:268:49)
+    at listOnTimeout (node:internal/timers:569:17)
+    at process.processTimers (node:internal/timers:512:7)
+[error] 
+[error] Error: An unexpected error has occurred.
