@@ -16,7 +16,7 @@ const {
 } = require("firebase-admin/firestore");
 const { onCall, HttpsError } = require("firebase-functions/v2/https");
 
-exports.createExcessStock = onCall({cors: true}, async (request) => {
+exports.createAdditionalStock = onCall({cors: true}, async (request) => {
     try {
         const data = request?.data;
         const {
@@ -35,13 +35,13 @@ exports.createExcessStock = onCall({cors: true}, async (request) => {
         } = data;
 
         // Convert strings to numbers and round to two decimal places
-        const parsedAgoLitres = parseFloat(agoLitres);
-        const parsedPmsLitres = parseFloat(pmsLitres);
+        // const parsedAgoLitres = parseFloat(agoLitres);
+        // const parsedPmsLitres = parseFloat(pmsLitres);
 
-        const formattedAgoLitres = parseFloat(parsedAgoLitres.toFixed(2) || "0.00");
-        const formattedPmsLitres = parseFloat(parsedPmsLitres.toFixed(2) || "0.00");
+        // const formattedAgoLitres = parseFloat(parsedAgoLitres.toFixed(2) || "0.00");
+        // const formattedPmsLitres = parseFloat(parsedPmsLitres.toFixed(2) || "0.00");
 
-        const totalLitres = formattedAgoLitres + formattedPmsLitres;
+        const totalLitres = agoLitres + pmsLitres;
 
         const created_at = Timestamp.fromDate(new Date());
         const updated_at = Timestamp.fromDate(new Date());
@@ -51,13 +51,13 @@ exports.createExcessStock = onCall({cors: true}, async (request) => {
 
         // Create stock on bucket
         const stock = await getFirestore().collection("excessiveStockBucket").add({
-            agoLitres: formattedAgoLitres.toString(),
-            pmsLitres: formattedPmsLitres.toString(),
+            agoLitres,
+            pmsLitres,
             agoPrice,
             pmsPrice,
             agoTotalPrice,
             pmsTotalPrice,
-            totalLitres: totalLitres.toString(),
+            totalLitres,
             totalPrice,
             date,
             day,
@@ -84,14 +84,14 @@ exports.createExcessStock = onCall({cors: true}, async (request) => {
             .collection("excessiveStocks")
             .doc(stock?.id)
             .set({
-                agoLitres: formattedAgoLitres.toString(),
-                pmsLitres: formattedPmsLitres.toString(),
+                agoLitres,
+                pmsLitres,
                 agoPrice,
                 pmsPrice,
                 agoTotalPrice,
                 pmsTotalPrice,
                 totalPrice,
-                totalLitres: totalLitres.toString(),
+                totalLitres,
                 stationID: station?.id,
                 stationName: station?.name,
                 date,
@@ -106,22 +106,22 @@ exports.createExcessStock = onCall({cors: true}, async (request) => {
 
         async function incrementStringNumber(collectionRef, docId, fieldName, incrementBy) {
             const docSnapshot = await collectionRef.doc(docId).get();
-            let currentValue = parseFloat(docSnapshot.data()[fieldName] || "0.00");
+            let currentValue = docSnapshot.data()[fieldName];
             currentValue += incrementBy;
-            await collectionRef.doc(docId).update({ [fieldName]: currentValue.toString() });
+            await collectionRef.doc(docId).update({ [fieldName]: currentValue});
         }
         
         // Usage within your function
-        await incrementStringNumber(admin.firestore().collection("stationBucket"), station?.id, 'agoLitres', formattedAgoLitres);
-        await incrementStringNumber(admin.firestore().collection("stationBucket"), station?.id, 'pmsLitres', formattedPmsLitres);
-        await incrementStringNumber(admin.firestore().collection("stationBucket"), station?.id, 'availableAgoLitres', formattedAgoLitres);
-        await incrementStringNumber(admin.firestore().collection("stationBucket"), station?.id, 'availablePmsLitres', formattedPmsLitres);
+        await incrementStringNumber(admin.firestore().collection("stationBucket"), station?.id, 'agoLitres', agoLitres);
+        await incrementStringNumber(admin.firestore().collection("stationBucket"), station?.id, 'pmsLitres', pmsLitres);
+        await incrementStringNumber(admin.firestore().collection("stationBucket"), station?.id, 'availableAgoLitres', agoLitres);
+        await incrementStringNumber(admin.firestore().collection("stationBucket"), station?.id, 'availablePmsLitres', pmsLitres);
         
 
-        await incrementStringNumber(admin.firestore().collection("stations").doc(station?.id).collection("account"), "info", 'agoLitres', formattedAgoLitres);
-        await incrementStringNumber(admin.firestore().collection("stations").doc(station?.id).collection("account"), "info", 'pmsLitres', formattedPmsLitres);
-        await incrementStringNumber(admin.firestore().collection("stations").doc(station?.id).collection("account"), "info", 'availableAgoLitres', formattedAgoLitres);
-        await incrementStringNumber(admin.firestore().collection("stations").doc(station?.id).collection("account"), "info", 'availablePmsLitres', formattedPmsLitres);
+        await incrementStringNumber(admin.firestore().collection("stations").doc(station?.id).collection("account"), "info", 'agoLitres', agoLitres);
+        await incrementStringNumber(admin.firestore().collection("stations").doc(station?.id).collection("account"), "info", 'pmsLitres', pmsLitres);
+        await incrementStringNumber(admin.firestore().collection("stations").doc(station?.id).collection("account"), "info", 'availableAgoLitres', agoLitres);
+        await incrementStringNumber(admin.firestore().collection("stations").doc(station?.id).collection("account"), "info", 'availablePmsLitres', pmsLitres);
         
 
         return { status: 200, message: "Excess stock is added successfully" };
