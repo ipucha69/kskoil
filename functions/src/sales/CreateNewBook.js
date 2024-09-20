@@ -16,6 +16,9 @@ const { onCall, HttpsError } = require("firebase-functions/v2/https");
 
 exports.createNewBook = onCall(async (request) => {
     try {
+        const data = request?.data;
+        const { currentDate } = data;
+        
         // Get all stations from the stationBucket collection
         const stationsSnapshot = await admin
         .firestore()
@@ -34,7 +37,7 @@ exports.createNewBook = onCall(async (request) => {
         //   .subtract(1, "day")
         //   .format("DD-MM-YYYY");
 
-        const currentDate = "01-08-2024";
+        // const currentDate = "01-09-2024";
 
         // Check if a dailySalesBook already exists for the station and current date
         const existingBookQuery = await admin
