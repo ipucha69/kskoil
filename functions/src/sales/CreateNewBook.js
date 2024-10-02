@@ -17,12 +17,13 @@ const { onCall, HttpsError } = require("firebase-functions/v2/https");
 exports.createNewBook = onCall(async (request) => {
     try {
         const data = request?.data;
-        const { currentDate } = data;
+        const { currentDate, id } = data;
         
         // Get all stations from the stationBucket collection
         const stationsSnapshot = await admin
         .firestore()
         .collection("stationBucket")
+        .where("id", "==", id)
         .get();
 
         // Iterate through each station
