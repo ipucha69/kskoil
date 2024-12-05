@@ -55,8 +55,8 @@ exports.createSale = onCall(async (request) => {
       skipped,
       stationName,
       saleType,
-      availabeAgoL,
-      availabePmsL,
+      availableAgoL,
+      availablePmsL,
       soldAgoL,
       soldPmsL,
     } = data;
@@ -139,8 +139,8 @@ exports.createSale = onCall(async (request) => {
     }
 
     await admin.firestore().collection("stationBucket").doc(stationID).update({
-      availableAgoLitres: availabeAgoL,
-      availablePmsLitres: availabePmsL,
+      availableAgoLitres: availableAgoL,
+      availablePmsLitres: availablePmsL,
       soldAgoLitres: soldAgoL,
       soldPmsLitres: soldPmsL,
     });
@@ -152,8 +152,8 @@ exports.createSale = onCall(async (request) => {
       .collection("account")
       .doc("info")
       .update({
-        availableAgoLitres: availabeAgoL,
-        availablePmsLitres: availabePmsL,
+        availableAgoLitres: availableAgoL,
+        availablePmsLitres: availablePmsL,
         soldAgoLitres: soldAgoL,
         soldPmsLitres: soldPmsL,
       });
